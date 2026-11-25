@@ -1,4 +1,4 @@
-"""Automated verification tests for the urban-aqi-prediction project."""
+"""Automated verification tests for the Pakistan Air Quality & Winter Smog project."""
 
 from __future__ import annotations
 
@@ -11,13 +11,18 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.metrics import (
+    mean_absolute_error,
+    mean_squared_error,
+    r2_score,
+    roc_auc_score,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 NOTEBOOK_PATH = ROOT / "urban-aqi-prediction.ipynb"
-DATASET_PATH = ROOT / "dataset" / "air_quality_daily.csv"
-MODEL_PATH = ROOT / "model" / "air_quality_linear_regression_model.pkl"
-MAP_PATH = ROOT / "visualizations" / "air_quality_map.html"
+DATASET_PATH = ROOT / "dataset" / "pakistan_air_quality_daily.csv"
+MODEL_PATH = ROOT / "model" / "pakistan_aqi_smog_models.pkl"
+MAP_PATH = ROOT / "visualizations" / "pakistan_air_quality_map.html"
 
 
 def build_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
@@ -29,13 +34,18 @@ def build_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     work["month"] = work["date"].dt.month
     work["day_of_week"] = work["date"].dt.day_of_week
     work["day_of_year"] = work["date"].dt.day_of_year
+    work["temp_range"] = (work["temp_max"] - work["temp_min"]).round(2)
+    work["dew_point_spread"] = (work["temp_mean"] - work["dew_point_mean"]).round(2)
     work = work.sort_values(["city_id", "date"]).reset_index(drop=True)
 
     base_cols = [
         "city_id",
+        "latitude",
+        "longitude",
         "month",
         "day_of_week",
         "day_of_year",
+        "is_winter_smog_season",
         "pm2_5_mean",
         "pm2_5_max",
         "pm10_mean",
@@ -46,9 +56,19 @@ def build_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
         "co_8h_max",
         "dust_mean",
         "aod_mean",
+        "temp_mean",
+        "temp_min",
+        "temp_range",
+        "dew_point_spread",
+        "humidity_mean",
+        "wind_speed_mean",
+        "pressure_mean",
+        "precip_sum",
+        "cloud_cover_mean",
     ]
-    rolling_cols = [
+    lag_source_cols = [
         "pm2_5_mean",
+        "pm2_5_max",
         "pm10_mean",
         "no2_mean",
         "so2_mean",
@@ -56,11 +76,23 @@ def build_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
         "co_8h_max",
         "dust_mean",
         "aod_mean",
+        "temp_mean",
+        "humidity_mean",
+        "wind_speed_mean",
+        "pressure_mean",
+        "dew_point_spread",
     ]
-    lag_source_cols = [
-        c
-        for c in base_cols
-        if c not in ("city_id", "month", "day_of_week", "day_of_year")
+    rolling_cols = [
+        "pm2_5_mean",
+        "pm10_mean",
+        "no2_mean",
+        "so2_mean",
+        "aod_mean",
+        "temp_mean",
+        "humidity_mean",
+        "wind_speed_mean",
+        "pressure_mean",
+        "dew_point_spread",
     ]
 
     grouped = work.groupby("city_id", group_keys=False)
@@ -88,19 +120,24 @@ def build_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     result = pd.concat(
-        [work[["date", "city"] + base_cols], lag1, lag2, lag3, roll3, roll7], axis=1
+        [work[["date", "city", "province"] + base_cols], lag1, lag2, lag3, roll3, roll7],
+        axis=1,
     )
     valid_history = (day_diff_1 == 1) & (day_diff_2 == 2) & (day_diff_3 == 3)
     result = result.loc[valid_history].copy()
 
     next_date = grouped["date"].shift(-1)
     result["target_pm25"] = grouped["pm2_5_mean"].shift(-1)
+    result["target_smog_day"] = grouped["is_smog_day"].shift(-1)
+    result["target_winter_season"] = grouped["is_winter_smog_season"].shift(-1)
     result = result.loc[(next_date - result["date"]).dt.days == 1].copy()
+    result["target_smog_day"] = result["target_smog_day"].astype(int)
+    result["target_winter_season"] = result["target_winter_season"].astype(int)
     return result.dropna().reset_index(drop=True)
 
 
-class TestUrbanAqiProject(unittest.TestCase):
-    """End-to-end validation suite for configs, notebook, data, model, and map."""
+class TestPakistanAqiProject(unittest.TestCase):
+    """End-to-end validation suite for configs, notebook, data, models, and visualizations."""
 
     def test_project_config_files_exist(self) -> None:
         required_files = [
@@ -112,6 +149,7 @@ class TestUrbanAqiProject(unittest.TestCase):
             ".gitattributes",
             "LICENSE",
             "README.md",
+            "scripts/fetch_pakistan_data.py",
             ".vscode/settings.json",
             ".vscode/extensions.json",
         ]
@@ -166,22 +204,24 @@ class TestUrbanAqiProject(unittest.TestCase):
 
     def test_dataset_schema_and_invariants(self) -> None:
         df = pd.read_csv(DATASET_PATH)
-        self.assertEqual(df.shape, (78500, 19))
+        self.assertEqual(df.shape, (47190, 29))
         self.assertEqual(int(df.isna().sum().sum()), 0)
-        self.assertEqual(df["city"].nunique(), 50)
+        self.assertEqual(df["city"].nunique(), 30)
         self.assertEqual(df["date"].min(), "2022-08-05")
-        self.assertEqual(df["date"].max(), "2026-11-21")
+        self.assertEqual(df["date"].max(), "2026-11-24")
 
     def test_model_artifact_and_holdout_metrics(self) -> None:
         artifact = joblib.load(MODEL_PATH)
-        self.assertIn("model", artifact)
+        self.assertIn("pm25_model", artifact)
+        self.assertIn("smog_classifier", artifact)
         self.assertIn("feature_columns", artifact)
         self.assertIn("city_map", artifact)
+        self.assertEqual(artifact["smog_threshold_ugm3"], 55.5)
 
         feature_columns = artifact["feature_columns"]
         city_map = artifact["city_map"]
-        self.assertEqual(len(feature_columns), 60)
-        self.assertEqual(len(city_map), 50)
+        self.assertEqual(len(feature_columns), 88)
+        self.assertEqual(len(city_map), 30)
 
         raw_df = pd.read_csv(DATASET_PATH)
         feat_df = build_engineered_features(raw_df)
@@ -189,25 +229,30 @@ class TestUrbanAqiProject(unittest.TestCase):
             method="first", pct=True
         )
         test_df = feat_df[feat_df["_rank_pct"] > 0.90].drop(columns=["_rank_pct"])
-        self.assertEqual(len(test_df), 7850)
+        self.assertEqual(len(test_df), 4710)
 
-        preds = np.maximum(artifact["model"].predict(test_df[feature_columns]), 0)
+        preds = np.maximum(artifact["pm25_model"].predict(test_df[feature_columns]), 0)
+        probs = artifact["smog_classifier"].predict_proba(test_df[feature_columns])[:, 1]
         self.assertFalse(np.isnan(preds).any())
+        self.assertFalse(np.isnan(probs).any())
 
         y_true = test_df["target_pm25"]
         rmse = math.sqrt(mean_squared_error(y_true, preds))
         mae = mean_absolute_error(y_true, preds)
         r2 = r2_score(y_true, preds)
+        roc_auc = roc_auc_score(test_df["target_smog_day"], probs)
 
-        self.assertAlmostEqual(rmse, 9.68, places=2)
-        self.assertAlmostEqual(mae, 6.31, places=2)
-        self.assertAlmostEqual(r2, 0.8414, places=4)
+        self.assertAlmostEqual(rmse, 13.35, places=2)
+        self.assertAlmostEqual(mae, 8.82, places=2)
+        self.assertAlmostEqual(r2, 0.7723, places=4)
+        self.assertAlmostEqual(roc_auc, 0.9372, places=4)
 
     def test_visualization_exports_and_map_provider(self) -> None:
         expected_pngs = [
             "eda_overview.png",
-            "delhi_pacf.png",
+            "lahore_pacf.png",
             "model_evaluation.png",
+            "winter_smog_city_ranking.png",
             "city_dashboard_overview.png",
         ]
         for filename in expected_pngs:
@@ -218,14 +263,14 @@ class TestUrbanAqiProject(unittest.TestCase):
                 self.assertGreater(len(raw), 10000)
                 self.assertEqual(raw[:8], b"\x89PNG\r\n\x1a\n")
 
-        self.assertTrue(MAP_PATH.is_file(), "Missing visualizations/air_quality_map.html")
+        self.assertTrue(MAP_PATH.is_file(), "Missing visualizations/pakistan_air_quality_map.html")
         html = MAP_PATH.read_text(encoding="utf-8")
         self.assertGreater(len(html), 10000)
         self.assertIn("server.arcgisonline.com", html)
         self.assertNotIn("tile.openstreetmap.org", html)
         self.assertNotIn("basemaps.cartocdn.com", html)
-        self.assertIn("Delhi", html)
-        self.assertIn("Next-Day Pred", html)
+        self.assertIn("Lahore", html)
+        self.assertIn("Winter Smog Risk", html)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 [project]
 name = "urban-aqi-prediction"
 version = "0.1.0"
-description = "End-to-end exploratory data analysis, leak-free next-day PM2.5 forecasting, and interactive 50-city air quality dashboard."
+description = "End-to-end exploratory data analysis, leak-free next-day PM2.5 & winter smog forecasting, and interactive 30-city Pakistan air quality dashboard."
 readme = "README.md"
 requires-python = ">=3.14.7,<3.15"
 license = "MIT"
@@ -17,6 +17,7 @@ dependencies = [
     "matplotlib>=3.11.2,<4",
     "numpy>=2.5.5,<3",
     "pandas>=3.1.1,<4",
+    "requests>=2.34.2,<3",
     "scikit-learn>=1.9.1,<2",
     "seaborn>=0.13.2,<1",
     "statsmodels>=0.15.0,<1",
@@ -25,6 +26,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pandas-stubs>=3.1.0.261029",
+    "types-requests>=2.33.0.261030",
     "types-seaborn>=0.13.2.20261122",
 ]
 

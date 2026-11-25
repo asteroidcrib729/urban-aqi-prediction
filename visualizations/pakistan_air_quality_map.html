@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_9d600ce89a75675575a6b55bc43dabd1 {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>/*
+ * Glyphicons Halflings -- the icon font used by folium's default Awesome Markers
+ * (Icon(prefix="glyphicon")). Extracted from Bootstrap 3's glyphicon rules only.
+ *
+ * folium previously loaded netdna's bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:'Glyphicons Halflings';src:url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot');src:url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');}.glyphicon{position:relative;top:1px;display:inline-block;font-family:'Glyphicons Halflings';font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:"\2a";}
+.glyphicon-plus:before{content:"\2b";}
+.glyphicon-euro:before{content:"\20ac";}
+.glyphicon-minus:before{content:"\2212";}
+.glyphicon-cloud:before{content:"\2601";}
+.glyphicon-envelope:before{content:"\2709";}
+.glyphicon-pencil:before{content:"\270f";}
+.glyphicon-glass:before{content:"\e001";}
+.glyphicon-music:before{content:"\e002";}
+.glyphicon-search:before{content:"\e003";}
+.glyphicon-heart:before{content:"\e005";}
+.glyphicon-star:before{content:"\e006";}
+.glyphicon-star-empty:before{content:"\e007";}
+.glyphicon-user:before{content:"\e008";}
+.glyphicon-film:before{content:"\e009";}
+.glyphicon-th-large:before{content:"\e010";}
+.glyphicon-th:before{content:"\e011";}
+.glyphicon-th-list:before{content:"\e012";}
+.glyphicon-ok:before{content:"\e013";}
+.glyphicon-remove:before{content:"\e014";}
+.glyphicon-zoom-in:before{content:"\e015";}
+.glyphicon-zoom-out:before{content:"\e016";}
+.glyphicon-off:before{content:"\e017";}
+.glyphicon-signal:before{content:"\e018";}
+.glyphicon-cog:before{content:"\e019";}
+.glyphicon-trash:before{content:"\e020";}
+.glyphicon-home:before{content:"\e021";}
+.glyphicon-file:before{content:"\e022";}
+.glyphicon-time:before{content:"\e023";}
+.glyphicon-road:before{content:"\e024";}
+.glyphicon-download-alt:before{content:"\e025";}
+.glyphicon-download:before{content:"\e026";}
+.glyphicon-upload:before{content:"\e027";}
+.glyphicon-inbox:before{content:"\e028";}
+.glyphicon-play-circle:before{content:"\e029";}
+.glyphicon-repeat:before{content:"\e030";}
+.glyphicon-refresh:before{content:"\e031";}
+.glyphicon-list-alt:before{content:"\e032";}
+.glyphicon-flag:before{content:"\e034";}
+.glyphicon-headphones:before{content:"\e035";}
+.glyphicon-volume-off:before{content:"\e036";}
+.glyphicon-volume-down:before{content:"\e037";}
+.glyphicon-volume-up:before{content:"\e038";}
+.glyphicon-qrcode:before{content:"\e039";}
+.glyphicon-barcode:before{content:"\e040";}
+.glyphicon-tag:before{content:"\e041";}
+.glyphicon-tags:before{content:"\e042";}
+.glyphicon-book:before{content:"\e043";}
+.glyphicon-print:before{content:"\e045";}
+.glyphicon-font:before{content:"\e047";}
+.glyphicon-bold:before{content:"\e048";}
+.glyphicon-italic:before{content:"\e049";}
+.glyphicon-text-height:before{content:"\e050";}
+.glyphicon-text-width:before{content:"\e051";}
+.glyphicon-align-left:before{content:"\e052";}
+.glyphicon-align-center:before{content:"\e053";}
+.glyphicon-align-right:before{content:"\e054";}
+.glyphicon-align-justify:before{content:"\e055";}
+.glyphicon-list:before{content:"\e056";}
+.glyphicon-indent-left:before{content:"\e057";}
+.glyphicon-indent-right:before{content:"\e058";}
+.glyphicon-facetime-video:before{content:"\e059";}
+.glyphicon-picture:before{content:"\e060";}
+.glyphicon-map-marker:before{content:"\e062";}
+.glyphicon-adjust:before{content:"\e063";}
+.glyphicon-tint:before{content:"\e064";}
+.glyphicon-edit:before{content:"\e065";}
+.glyphicon-share:before{content:"\e066";}
+.glyphicon-check:before{content:"\e067";}
+.glyphicon-move:before{content:"\e068";}
+.glyphicon-step-backward:before{content:"\e069";}
+.glyphicon-fast-backward:before{content:"\e070";}
+.glyphicon-backward:before{content:"\e071";}
+.glyphicon-play:before{content:"\e072";}
+.glyphicon-pause:before{content:"\e073";}
+.glyphicon-stop:before{content:"\e074";}
+.glyphicon-forward:before{content:"\e075";}
+.glyphicon-fast-forward:before{content:"\e076";}
+.glyphicon-step-forward:before{content:"\e077";}
+.glyphicon-eject:before{content:"\e078";}
+.glyphicon-chevron-left:before{content:"\e079";}
+.glyphicon-chevron-right:before{content:"\e080";}
+.glyphicon-plus-sign:before{content:"\e081";}
+.glyphicon-minus-sign:before{content:"\e082";}
+.glyphicon-remove-sign:before{content:"\e083";}
+.glyphicon-ok-sign:before{content:"\e084";}
+.glyphicon-question-sign:before{content:"\e085";}
+.glyphicon-info-sign:before{content:"\e086";}
+.glyphicon-screenshot:before{content:"\e087";}
+.glyphicon-remove-circle:before{content:"\e088";}
+.glyphicon-ok-circle:before{content:"\e089";}
+.glyphicon-ban-circle:before{content:"\e090";}
+.glyphicon-arrow-left:before{content:"\e091";}
+.glyphicon-arrow-right:before{content:"\e092";}
+.glyphicon-arrow-up:before{content:"\e093";}
+.glyphicon-arrow-down:before{content:"\e094";}
+.glyphicon-share-alt:before{content:"\e095";}
+.glyphicon-resize-full:before{content:"\e096";}
+.glyphicon-resize-small:before{content:"\e097";}
+.glyphicon-exclamation-sign:before{content:"\e101";}
+.glyphicon-gift:before{content:"\e102";}
+.glyphicon-leaf:before{content:"\e103";}
+.glyphicon-eye-open:before{content:"\e105";}
+.glyphicon-eye-close:before{content:"\e106";}
+.glyphicon-warning-sign:before{content:"\e107";}
+.glyphicon-plane:before{content:"\e108";}
+.glyphicon-random:before{content:"\e110";}
+.glyphicon-comment:before{content:"\e111";}
+.glyphicon-magnet:before{content:"\e112";}
+.glyphicon-chevron-up:before{content:"\e113";}
+.glyphicon-chevron-down:before{content:"\e114";}
+.glyphicon-retweet:before{content:"\e115";}
+.glyphicon-shopping-cart:before{content:"\e116";}
+.glyphicon-folder-close:before{content:"\e117";}
+.glyphicon-folder-open:before{content:"\e118";}
+.glyphicon-resize-vertical:before{content:"\e119";}
+.glyphicon-resize-horizontal:before{content:"\e120";}
+.glyphicon-hdd:before{content:"\e121";}
+.glyphicon-bullhorn:before{content:"\e122";}
+.glyphicon-certificate:before{content:"\e124";}
+.glyphicon-thumbs-up:before{content:"\e125";}
+.glyphicon-thumbs-down:before{content:"\e126";}
+.glyphicon-hand-right:before{content:"\e127";}
+.glyphicon-hand-left:before{content:"\e128";}
+.glyphicon-hand-up:before{content:"\e129";}
+.glyphicon-hand-down:before{content:"\e130";}
+.glyphicon-circle-arrow-right:before{content:"\e131";}
+.glyphicon-circle-arrow-left:before{content:"\e132";}
+.glyphicon-circle-arrow-up:before{content:"\e133";}
+.glyphicon-circle-arrow-down:before{content:"\e134";}
+.glyphicon-globe:before{content:"\e135";}
+.glyphicon-tasks:before{content:"\e137";}
+.glyphicon-filter:before{content:"\e138";}
+.glyphicon-fullscreen:before{content:"\e140";}
+.glyphicon-dashboard:before{content:"\e141";}
+.glyphicon-heart-empty:before{content:"\e143";}
+.glyphicon-link:before{content:"\e144";}
+.glyphicon-phone:before{content:"\e145";}
+.glyphicon-usd:before{content:"\e148";}
+.glyphicon-gbp:before{content:"\e149";}
+.glyphicon-sort:before{content:"\e150";}
+.glyphicon-sort-by-alphabet:before{content:"\e151";}
+.glyphicon-sort-by-alphabet-alt:before{content:"\e152";}
+.glyphicon-sort-by-order:before{content:"\e153";}
+.glyphicon-sort-by-order-alt:before{content:"\e154";}
+.glyphicon-sort-by-attributes:before{content:"\e155";}
+.glyphicon-sort-by-attributes-alt:before{content:"\e156";}
+.glyphicon-unchecked:before{content:"\e157";}
+.glyphicon-expand:before{content:"\e158";}
+.glyphicon-collapse-down:before{content:"\e159";}
+.glyphicon-collapse-up:before{content:"\e160";}
+.glyphicon-log-in:before{content:"\e161";}
+.glyphicon-flash:before{content:"\e162";}
+.glyphicon-log-out:before{content:"\e163";}
+.glyphicon-new-window:before{content:"\e164";}
+.glyphicon-record:before{content:"\e165";}
+.glyphicon-save:before{content:"\e166";}
+.glyphicon-open:before{content:"\e167";}
+.glyphicon-saved:before{content:"\e168";}
+.glyphicon-import:before{content:"\e169";}
+.glyphicon-export:before{content:"\e170";}
+.glyphicon-send:before{content:"\e171";}
+.glyphicon-floppy-disk:before{content:"\e172";}
+.glyphicon-floppy-saved:before{content:"\e173";}
+.glyphicon-floppy-remove:before{content:"\e174";}
+.glyphicon-floppy-save:before{content:"\e175";}
+.glyphicon-floppy-open:before{content:"\e176";}
+.glyphicon-credit-card:before{content:"\e177";}
+.glyphicon-transfer:before{content:"\e178";}
+.glyphicon-cutlery:before{content:"\e179";}
+.glyphicon-header:before{content:"\e180";}
+.glyphicon-compressed:before{content:"\e181";}
+.glyphicon-earphone:before{content:"\e182";}
+.glyphicon-phone-alt:before{content:"\e183";}
+.glyphicon-tower:before{content:"\e184";}
+.glyphicon-stats:before{content:"\e185";}
+.glyphicon-sd-video:before{content:"\e186";}
+.glyphicon-hd-video:before{content:"\e187";}
+.glyphicon-subtitles:before{content:"\e188";}
+.glyphicon-sound-stereo:before{content:"\e189";}
+.glyphicon-sound-dolby:before{content:"\e190";}
+.glyphicon-sound-5-1:before{content:"\e191";}
+.glyphicon-sound-6-1:before{content:"\e192";}
+.glyphicon-sound-7-1:before{content:"\e193";}
+.glyphicon-copyright-mark:before{content:"\e194";}
+.glyphicon-registration-mark:before{content:"\e195";}
+.glyphicon-cloud-download:before{content:"\e197";}
+.glyphicon-cloud-upload:before{content:"\e198";}
+.glyphicon-tree-conifer:before{content:"\e199";}
+.glyphicon-tree-deciduous:before{content:"\e200";}
+.glyphicon-briefcase:before{content:"\1f4bc";}
+.glyphicon-calendar:before{content:"\1f4c5";}
+.glyphicon-pushpin:before{content:"\1f4cc";}
+.glyphicon-paperclip:before{content:"\1f4ce";}
+.glyphicon-camera:before{content:"\1f4f7";}
+.glyphicon-lock:before{content:"\1f512";}
+.glyphicon-bell:before{content:"\1f514";}
+.glyphicon-bookmark:before{content:"\1f516";}
+.glyphicon-fire:before{content:"\1f525";}
+.glyphicon-wrench:before{content:"\1f527";}
+</style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_9d600ce89a75675575a6b55bc43dabd1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_9d600ce89a75675575a6b55bc43dabd1 = L.map(
+                "map_9d600ce89a75675575a6b55bc43dabd1",
+                {
+                    center: [30.3753, 69.3451],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_d1f8062cc7ebdc420cf5e1bb45c3a018 = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Tiles \u0026copy; Esri \u0026mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_d1f8062cc7ebdc420cf5e1bb45c3a018.addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+            var circle_marker_77a82950b16ddf752493b502fe883f61 = L.circleMarker(
+                [34.17, 73.22],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_52315c7ef39c3879e176ab6e37ba7d95 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d2b78955aacc4e0bdfae923e0310d1db = $(`<div id="html_d2b78955aacc4e0bdfae923e0310d1db" style="width: 100.0%; height: 100.0%;"><b>Abbottabad</b> (Khyber Pakhtunkhwa)<br>Next-Day Pred (2026-11-25): 52.28 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 51.2%<br>Last Actual: 46.18 µg/m³</div>`)[0];
+                popup_52315c7ef39c3879e176ab6e37ba7d95.setContent(html_d2b78955aacc4e0bdfae923e0310d1db);
+            
+        
+
+        circle_marker_77a82950b16ddf752493b502fe883f61.bindPopup(popup_52315c7ef39c3879e176ab6e37ba7d95)
+        ;
+
+        
+    
+    
+            var circle_marker_836dc6993ef876857b6e9f3f3a499733 = L.circleMarker(
+                [29.35, 71.69],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_a38ac0406cf085fb12f624c2d6d03d3e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_773370d32d932b932d95ed31844f1c02 = $(`<div id="html_773370d32d932b932d95ed31844f1c02" style="width: 100.0%; height: 100.0%;"><b>Bahawalpur</b> (Punjab)<br>Next-Day Pred (2026-11-25): 43.61 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 47.4%<br>Last Actual: 53.90 µg/m³</div>`)[0];
+                popup_a38ac0406cf085fb12f624c2d6d03d3e.setContent(html_773370d32d932b932d95ed31844f1c02);
+            
+        
+
+        circle_marker_836dc6993ef876857b6e9f3f3a499733.bindPopup(popup_a38ac0406cf085fb12f624c2d6d03d3e)
+        ;
+
+        
+    
+    
+            var circle_marker_4bf7dcaab48e00ba659b9d547a6a1d13 = L.circleMarker(
+                [30.05, 70.65],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_5d9defe5c5c5ef323706758f9bbd81ab = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_65af8ce349c355f93461535f1e10b0aa = $(`<div id="html_65af8ce349c355f93461535f1e10b0aa" style="width: 100.0%; height: 100.0%;"><b>Dera Ghazi Khan</b> (Punjab)<br>Next-Day Pred (2026-11-25): 65.00 µg/m³ (Unhealthy)<br>Winter Smog Risk: 94.8%<br>Last Actual: 67.97 µg/m³</div>`)[0];
+                popup_5d9defe5c5c5ef323706758f9bbd81ab.setContent(html_65af8ce349c355f93461535f1e10b0aa);
+            
+        
+
+        circle_marker_4bf7dcaab48e00ba659b9d547a6a1d13.bindPopup(popup_5d9defe5c5c5ef323706758f9bbd81ab)
+        ;
+
+        
+    
+    
+            var circle_marker_7ed3c6f2bbe72002c1b776523b842201 = L.circleMarker(
+                [31.86, 70.9],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_3b8d2da5d5ba984d63cee12e4d37f37f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_36a676dd7b2b5cbb30156e865a9a505b = $(`<div id="html_36a676dd7b2b5cbb30156e865a9a505b" style="width: 100.0%; height: 100.0%;"><b>Dera Ismail Khan</b> (Khyber Pakhtunkhwa)<br>Next-Day Pred (2026-11-25): 69.20 µg/m³ (Unhealthy)<br>Winter Smog Risk: 94.1%<br>Last Actual: 64.75 µg/m³</div>`)[0];
+                popup_3b8d2da5d5ba984d63cee12e4d37f37f.setContent(html_36a676dd7b2b5cbb30156e865a9a505b);
+            
+        
+
+        circle_marker_7ed3c6f2bbe72002c1b776523b842201.bindPopup(popup_3b8d2da5d5ba984d63cee12e4d37f37f)
+        ;
+
+        
+    
+    
+            var circle_marker_5b4f338adc51cadc54bac12ad2b67818 = L.circleMarker(
+                [31.45, 73.14],
+                {"bubblingMouseEvents": true, "color": "#e74c3c", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e74c3c", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_d136df0954dc7fd997ef0480de9b2e83 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_06a63b899e4095e4511b4e22192edbb4 = $(`<div id="html_06a63b899e4095e4511b4e22192edbb4" style="width: 100.0%; height: 100.0%;"><b>Faisalabad</b> (Punjab)<br>Next-Day Pred (2026-11-25): 156.97 µg/m³ (Very Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 114.28 µg/m³</div>`)[0];
+                popup_d136df0954dc7fd997ef0480de9b2e83.setContent(html_06a63b899e4095e4511b4e22192edbb4);
+            
+        
+
+        circle_marker_5b4f338adc51cadc54bac12ad2b67818.bindPopup(popup_d136df0954dc7fd997ef0480de9b2e83)
+        ;
+
+        
+    
+    
+            var circle_marker_85deefff6a7fe759579fa887619f908c = L.circleMarker(
+                [35.92, 74.31],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_5264754c60e75673ec43315e9adbc0c7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3b51dda79ea85586aa33df7fe2d74e65 = $(`<div id="html_3b51dda79ea85586aa33df7fe2d74e65" style="width: 100.0%; height: 100.0%;"><b>Gilgit</b> (Gilgit-Baltistan)<br>Next-Day Pred (2026-11-25): 14.63 µg/m³ (Moderate)<br>Winter Smog Risk: 0.4%<br>Last Actual: 9.14 µg/m³</div>`)[0];
+                popup_5264754c60e75673ec43315e9adbc0c7.setContent(html_3b51dda79ea85586aa33df7fe2d74e65);
+            
+        
+
+        circle_marker_85deefff6a7fe759579fa887619f908c.bindPopup(popup_5264754c60e75673ec43315e9adbc0c7)
+        ;
+
+        
+    
+    
+            var circle_marker_4ac0841ac629bbef3c9f36871cfc5f8a = L.circleMarker(
+                [32.19, 74.19],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_e14c9d18581b4f5c6fd4e16be749dfa5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5760c299065e18ef7061c096817ec80c = $(`<div id="html_5760c299065e18ef7061c096817ec80c" style="width: 100.0%; height: 100.0%;"><b>Gujranwala</b> (Punjab)<br>Next-Day Pred (2026-11-25): 101.28 µg/m³ (Unhealthy)<br>Winter Smog Risk: 99.9%<br>Last Actual: 68.82 µg/m³</div>`)[0];
+                popup_e14c9d18581b4f5c6fd4e16be749dfa5.setContent(html_5760c299065e18ef7061c096817ec80c);
+            
+        
+
+        circle_marker_4ac0841ac629bbef3c9f36871cfc5f8a.bindPopup(popup_e14c9d18581b4f5c6fd4e16be749dfa5)
+        ;
+
+        
+    
+    
+            var circle_marker_c14296895c44f5422a006c61575a56e9 = L.circleMarker(
+                [32.57, 74.08],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_5c25eafb9acfefa7ecfdbc624a607324 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a725083d638ace2af9c8216ec15997ae = $(`<div id="html_a725083d638ace2af9c8216ec15997ae" style="width: 100.0%; height: 100.0%;"><b>Gujrat</b> (Punjab)<br>Next-Day Pred (2026-11-25): 109.16 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 93.16 µg/m³</div>`)[0];
+                popup_5c25eafb9acfefa7ecfdbc624a607324.setContent(html_a725083d638ace2af9c8216ec15997ae);
+            
+        
+
+        circle_marker_c14296895c44f5422a006c61575a56e9.bindPopup(popup_5c25eafb9acfefa7ecfdbc624a607324)
+        ;
+
+        
+    
+    
+            var circle_marker_8b48dab3c8d35fd4d477679d32b08249 = L.circleMarker(
+                [25.12, 62.33],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_9f765c1d03410be0a4a703e06211fac3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_54ad2b5eb8ab4e53cb8258e906e1128c = $(`<div id="html_54ad2b5eb8ab4e53cb8258e906e1128c" style="width: 100.0%; height: 100.0%;"><b>Gwadar</b> (Balochistan)<br>Next-Day Pred (2026-11-25): 23.25 µg/m³ (Moderate)<br>Winter Smog Risk: 1.5%<br>Last Actual: 23.65 µg/m³</div>`)[0];
+                popup_9f765c1d03410be0a4a703e06211fac3.setContent(html_54ad2b5eb8ab4e53cb8258e906e1128c);
+            
+        
+
+        circle_marker_8b48dab3c8d35fd4d477679d32b08249.bindPopup(popup_9f765c1d03410be0a4a703e06211fac3)
+        ;
+
+        
+    
+    
+            var circle_marker_3a32561d477506e8f65f3561d6e6ccae = L.circleMarker(
+                [25.4, 68.36],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_89e6b5c705975279af5e217a39486708 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a9191161f649c474311aca86268a61f8 = $(`<div id="html_a9191161f649c474311aca86268a61f8" style="width: 100.0%; height: 100.0%;"><b>Hyderabad</b> (Sindh)<br>Next-Day Pred (2026-11-25): 47.45 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 51.4%<br>Last Actual: 47.05 µg/m³</div>`)[0];
+                popup_89e6b5c705975279af5e217a39486708.setContent(html_a9191161f649c474311aca86268a61f8);
+            
+        
+
+        circle_marker_3a32561d477506e8f65f3561d6e6ccae.bindPopup(popup_89e6b5c705975279af5e217a39486708)
+        ;
+
+        
+    
+    
+            var circle_marker_6a13c877e0c10d5a0172d3f9a3a4ef8b = L.circleMarker(
+                [33.68, 73.05],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_64b421ef8539bbd3b4cb632f1603a67a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_50d9d6f66e391f7ae93d7733882cf761 = $(`<div id="html_50d9d6f66e391f7ae93d7733882cf761" style="width: 100.0%; height: 100.0%;"><b>Islamabad</b> (Islamabad Capital Territory)<br>Next-Day Pred (2026-11-25): 57.46 µg/m³ (Unhealthy)<br>Winter Smog Risk: 74.8%<br>Last Actual: 54.43 µg/m³</div>`)[0];
+                popup_64b421ef8539bbd3b4cb632f1603a67a.setContent(html_50d9d6f66e391f7ae93d7733882cf761);
+            
+        
+
+        circle_marker_6a13c877e0c10d5a0172d3f9a3a4ef8b.bindPopup(popup_64b421ef8539bbd3b4cb632f1603a67a)
+        ;
+
+        
+    
+    
+            var circle_marker_3aed3df2613651eae0702632420755ae = L.circleMarker(
+                [31.28, 72.33],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_e0ba435da9846bfc52c1505e1aa266a9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fe515f8aa03ed2b06288c6722b19c59e = $(`<div id="html_fe515f8aa03ed2b06288c6722b19c59e" style="width: 100.0%; height: 100.0%;"><b>Jhang</b> (Punjab)<br>Next-Day Pred (2026-11-25): 142.21 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 148.92 µg/m³</div>`)[0];
+                popup_e0ba435da9846bfc52c1505e1aa266a9.setContent(html_fe515f8aa03ed2b06288c6722b19c59e);
+            
+        
+
+        circle_marker_3aed3df2613651eae0702632420755ae.bindPopup(popup_e0ba435da9846bfc52c1505e1aa266a9)
+        ;
+
+        
+    
+    
+            var circle_marker_b8af617713ca16ff8f98aa5cb2ee7db8 = L.circleMarker(
+                [24.86, 67.0],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_5d7c3eb6bc4b672dbc9e017e1c6c1950 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8ea6485b13ba6472f9ae1d6e50e41d13 = $(`<div id="html_8ea6485b13ba6472f9ae1d6e50e41d13" style="width: 100.0%; height: 100.0%;"><b>Karachi</b> (Sindh)<br>Next-Day Pred (2026-11-25): 46.95 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 52.8%<br>Last Actual: 48.90 µg/m³</div>`)[0];
+                popup_5d7c3eb6bc4b672dbc9e017e1c6c1950.setContent(html_8ea6485b13ba6472f9ae1d6e50e41d13);
+            
+        
+
+        circle_marker_b8af617713ca16ff8f98aa5cb2ee7db8.bindPopup(popup_5d7c3eb6bc4b672dbc9e017e1c6c1950)
+        ;
+
+        
+    
+    
+            var circle_marker_9d49ad6c6327d5c7bf78ea9c0e5147e3 = L.circleMarker(
+                [31.12, 74.44],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_b2596f335b2780eafef1fd994fcca36e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a62b6a300ba3aaaee003c0f07f1c14f6 = $(`<div id="html_a62b6a300ba3aaaee003c0f07f1c14f6" style="width: 100.0%; height: 100.0%;"><b>Kasur</b> (Punjab)<br>Next-Day Pred (2026-11-25): 128.91 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 89.58 µg/m³</div>`)[0];
+                popup_b2596f335b2780eafef1fd994fcca36e.setContent(html_a62b6a300ba3aaaee003c0f07f1c14f6);
+            
+        
+
+        circle_marker_9d49ad6c6327d5c7bf78ea9c0e5147e3.bindPopup(popup_b2596f335b2780eafef1fd994fcca36e)
+        ;
+
+        
+    
+    
+            var circle_marker_4c09991381fafc5d92ee48dfbc7509ab = L.circleMarker(
+                [31.52, 74.36],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_eac42c5fdcb3ade58bcde4f6b84f39ba = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f0ce057bad1ee42df2ad10a17830fb0e = $(`<div id="html_f0ce057bad1ee42df2ad10a17830fb0e" style="width: 100.0%; height: 100.0%;"><b>Lahore</b> (Punjab)<br>Next-Day Pred (2026-11-25): 100.68 µg/m³ (Unhealthy)<br>Winter Smog Risk: 99.9%<br>Last Actual: 75.57 µg/m³</div>`)[0];
+                popup_eac42c5fdcb3ade58bcde4f6b84f39ba.setContent(html_f0ce057bad1ee42df2ad10a17830fb0e);
+            
+        
+
+        circle_marker_4c09991381fafc5d92ee48dfbc7509ab.bindPopup(popup_eac42c5fdcb3ade58bcde4f6b84f39ba)
+        ;
+
+        
+    
+    
+            var circle_marker_d0b9064d80b4a92e849b5b3378f3fbf0 = L.circleMarker(
+                [27.56, 68.2],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_c3ece063b1729ce19c20738e17f58d3b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1b942fc744e8af1d4f44135b2709a772 = $(`<div id="html_1b942fc744e8af1d4f44135b2709a772" style="width: 100.0%; height: 100.0%;"><b>Larkana</b> (Sindh)<br>Next-Day Pred (2026-11-25): 98.40 µg/m³ (Unhealthy)<br>Winter Smog Risk: 99.9%<br>Last Actual: 94.68 µg/m³</div>`)[0];
+                popup_c3ece063b1729ce19c20738e17f58d3b.setContent(html_1b942fc744e8af1d4f44135b2709a772);
+            
+        
+
+        circle_marker_d0b9064d80b4a92e849b5b3378f3fbf0.bindPopup(popup_c3ece063b1729ce19c20738e17f58d3b)
+        ;
+
+        
+    
+    
+            var circle_marker_0d3ce203a484bd0bf6abde841b3f4ca4 = L.circleMarker(
+                [34.2, 72.04],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_684ecda15bb1db732faca81003d6c6fb = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_35b9e0d4b6b7851cd3f4dd6327ae8179 = $(`<div id="html_35b9e0d4b6b7851cd3f4dd6327ae8179" style="width: 100.0%; height: 100.0%;"><b>Mardan</b> (Khyber Pakhtunkhwa)<br>Next-Day Pred (2026-11-25): 73.22 µg/m³ (Unhealthy)<br>Winter Smog Risk: 96.0%<br>Last Actual: 64.60 µg/m³</div>`)[0];
+                popup_684ecda15bb1db732faca81003d6c6fb.setContent(html_35b9e0d4b6b7851cd3f4dd6327ae8179);
+            
+        
+
+        circle_marker_0d3ce203a484bd0bf6abde841b3f4ca4.bindPopup(popup_684ecda15bb1db732faca81003d6c6fb)
+        ;
+
+        
+    
+    
+            var circle_marker_42bedcaaad4f609c43d5597626eb5f21 = L.circleMarker(
+                [34.77, 72.36],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_2940acf76fc83442cdeacef7a4c031da = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9f8d254e2805a910db88bc9facb80abd = $(`<div id="html_9f8d254e2805a910db88bc9facb80abd" style="width: 100.0%; height: 100.0%;"><b>Mingora</b> (Khyber Pakhtunkhwa)<br>Next-Day Pred (2026-11-25): 25.75 µg/m³ (Moderate)<br>Winter Smog Risk: 1.9%<br>Last Actual: 19.15 µg/m³</div>`)[0];
+                popup_2940acf76fc83442cdeacef7a4c031da.setContent(html_9f8d254e2805a910db88bc9facb80abd);
+            
+        
+
+        circle_marker_42bedcaaad4f609c43d5597626eb5f21.bindPopup(popup_2940acf76fc83442cdeacef7a4c031da)
+        ;
+
+        
+    
+    
+            var circle_marker_e1442c1120a104a260fa911defcb8c73 = L.circleMarker(
+                [30.16, 71.52],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_17f33a07c81ac6c9b7a78a66ccbcee80 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b3743dbc7f8c21b6d798fc9df782ef20 = $(`<div id="html_b3743dbc7f8c21b6d798fc9df782ef20" style="width: 100.0%; height: 100.0%;"><b>Multan</b> (Punjab)<br>Next-Day Pred (2026-11-25): 58.90 µg/m³ (Unhealthy)<br>Winter Smog Risk: 90.5%<br>Last Actual: 65.92 µg/m³</div>`)[0];
+                popup_17f33a07c81ac6c9b7a78a66ccbcee80.setContent(html_b3743dbc7f8c21b6d798fc9df782ef20);
+            
+        
+
+        circle_marker_e1442c1120a104a260fa911defcb8c73.bindPopup(popup_17f33a07c81ac6c9b7a78a66ccbcee80)
+        ;
+
+        
+    
+    
+            var circle_marker_565677eec24fffb109b51511809d66f7 = L.circleMarker(
+                [34.37, 73.47],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_086f9d9e4cedbe81cdf0f780a3c04cdc = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d6e78996d173242cdeaa2f7e177f67b1 = $(`<div id="html_d6e78996d173242cdeaa2f7e177f67b1" style="width: 100.0%; height: 100.0%;"><b>Muzaffarabad</b> (Azad Kashmir)<br>Next-Day Pred (2026-11-25): 37.73 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 12.6%<br>Last Actual: 30.39 µg/m³</div>`)[0];
+                popup_086f9d9e4cedbe81cdf0f780a3c04cdc.setContent(html_d6e78996d173242cdeaa2f7e177f67b1);
+            
+        
+
+        circle_marker_565677eec24fffb109b51511809d66f7.bindPopup(popup_086f9d9e4cedbe81cdf0f780a3c04cdc)
+        ;
+
+        
+    
+    
+            var circle_marker_da95514bdb79f6f1a8b474432b077e79 = L.circleMarker(
+                [26.24, 68.41],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_1b08b6b0f98cbf4630fdd86f07513be3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_94b9bb3cc93ab0895004fd610ba5ee09 = $(`<div id="html_94b9bb3cc93ab0895004fd610ba5ee09" style="width: 100.0%; height: 100.0%;"><b>Nawabshah</b> (Sindh)<br>Next-Day Pred (2026-11-25): 63.83 µg/m³ (Unhealthy)<br>Winter Smog Risk: 90.5%<br>Last Actual: 65.03 µg/m³</div>`)[0];
+                popup_1b08b6b0f98cbf4630fdd86f07513be3.setContent(html_94b9bb3cc93ab0895004fd610ba5ee09);
+            
+        
+
+        circle_marker_da95514bdb79f6f1a8b474432b077e79.bindPopup(popup_1b08b6b0f98cbf4630fdd86f07513be3)
+        ;
+
+        
+    
+    
+            var circle_marker_467a0ff6e6ba778764e5d9a86ab0cf4f = L.circleMarker(
+                [34.02, 71.52],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_f0ceadf1463b43d5125b20c3caa6bd0b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2bf3f9bd0dc3cfdd0ade6ed57dec63b5 = $(`<div id="html_2bf3f9bd0dc3cfdd0ade6ed57dec63b5" style="width: 100.0%; height: 100.0%;"><b>Peshawar</b> (Khyber Pakhtunkhwa)<br>Next-Day Pred (2026-11-25): 63.18 µg/m³ (Unhealthy)<br>Winter Smog Risk: 82.1%<br>Last Actual: 59.74 µg/m³</div>`)[0];
+                popup_f0ceadf1463b43d5125b20c3caa6bd0b.setContent(html_2bf3f9bd0dc3cfdd0ade6ed57dec63b5);
+            
+        
+
+        circle_marker_467a0ff6e6ba778764e5d9a86ab0cf4f.bindPopup(popup_f0ceadf1463b43d5125b20c3caa6bd0b)
+        ;
+
+        
+    
+    
+            var circle_marker_001f5a32c076bb6f688ef6dadc443a49 = L.circleMarker(
+                [30.18, 66.97],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_220e554c700a26f69474935ef3f5239a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_58f46eb415d1e9f7b71dcaf40d55cfd3 = $(`<div id="html_58f46eb415d1e9f7b71dcaf40d55cfd3" style="width: 100.0%; height: 100.0%;"><b>Quetta</b> (Balochistan)<br>Next-Day Pred (2026-11-25): 12.91 µg/m³ (Moderate)<br>Winter Smog Risk: 0.2%<br>Last Actual: 11.48 µg/m³</div>`)[0];
+                popup_220e554c700a26f69474935ef3f5239a.setContent(html_58f46eb415d1e9f7b71dcaf40d55cfd3);
+            
+        
+
+        circle_marker_001f5a32c076bb6f688ef6dadc443a49.bindPopup(popup_220e554c700a26f69474935ef3f5239a)
+        ;
+
+        
+    
+    
+            var circle_marker_07a842eefc4042549be7073b043241d7 = L.circleMarker(
+                [28.42, 70.3],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_299d6b5876c7c6b7867ce7683fa688c2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2c9baecf9c177f7f60432d9dd0867731 = $(`<div id="html_2c9baecf9c177f7f60432d9dd0867731" style="width: 100.0%; height: 100.0%;"><b>Rahim Yar Khan</b> (Punjab)<br>Next-Day Pred (2026-11-25): 50.35 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 63.5%<br>Last Actual: 58.83 µg/m³</div>`)[0];
+                popup_299d6b5876c7c6b7867ce7683fa688c2.setContent(html_2c9baecf9c177f7f60432d9dd0867731);
+            
+        
+
+        circle_marker_07a842eefc4042549be7073b043241d7.bindPopup(popup_299d6b5876c7c6b7867ce7683fa688c2)
+        ;
+
+        
+    
+    
+            var circle_marker_08fc635283ff054b91e3d083d0e8c95c = L.circleMarker(
+                [33.57, 73.02],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_695790d4395377ef652b738c7ed4fe83 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_56d00ed52f1afe74530cfaef9a9864bd = $(`<div id="html_56d00ed52f1afe74530cfaef9a9864bd" style="width: 100.0%; height: 100.0%;"><b>Rawalpindi</b> (Punjab)<br>Next-Day Pred (2026-11-25): 54.78 µg/m³ (Unhealthy for Sensitive)<br>Winter Smog Risk: 63.0%<br>Last Actual: 54.43 µg/m³</div>`)[0];
+                popup_695790d4395377ef652b738c7ed4fe83.setContent(html_56d00ed52f1afe74530cfaef9a9864bd);
+            
+        
+
+        circle_marker_08fc635283ff054b91e3d083d0e8c95c.bindPopup(popup_695790d4395377ef652b738c7ed4fe83)
+        ;
+
+        
+    
+    
+            var circle_marker_896dda61edc343d7c583737f6b60f915 = L.circleMarker(
+                [30.67, 73.11],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_b6ede1de855c82bd05fbb089595426c0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b9c33b9d183f104d837aae4de9956b41 = $(`<div id="html_b9c33b9d183f104d837aae4de9956b41" style="width: 100.0%; height: 100.0%;"><b>Sahiwal</b> (Punjab)<br>Next-Day Pred (2026-11-25): 130.48 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 127.03 µg/m³</div>`)[0];
+                popup_b6ede1de855c82bd05fbb089595426c0.setContent(html_b9c33b9d183f104d837aae4de9956b41);
+            
+        
+
+        circle_marker_896dda61edc343d7c583737f6b60f915.bindPopup(popup_b6ede1de855c82bd05fbb089595426c0)
+        ;
+
+        
+    
+    
+            var circle_marker_20512dc882305b239a1e2e958fd74f75 = L.circleMarker(
+                [32.07, 72.69],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_9af080e9c2963e47f7fa1a061d4bf2cf = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ce0cb971c0306f5166fb3b35c7087f3f = $(`<div id="html_ce0cb971c0306f5166fb3b35c7087f3f" style="width: 100.0%; height: 100.0%;"><b>Sargodha</b> (Punjab)<br>Next-Day Pred (2026-11-25): 125.30 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 90.28 µg/m³</div>`)[0];
+                popup_9af080e9c2963e47f7fa1a061d4bf2cf.setContent(html_ce0cb971c0306f5166fb3b35c7087f3f);
+            
+        
+
+        circle_marker_20512dc882305b239a1e2e958fd74f75.bindPopup(popup_9af080e9c2963e47f7fa1a061d4bf2cf)
+        ;
+
+        
+    
+    
+            var circle_marker_a29a945becc44318e8befcd8ceeb7629 = L.circleMarker(
+                [31.72, 73.98],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_cc889ee4ae1e63cc08bf31eb8e741327 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_090ea2b912c9407d21df89bf0e5627f9 = $(`<div id="html_090ea2b912c9407d21df89bf0e5627f9" style="width: 100.0%; height: 100.0%;"><b>Sheikhupura</b> (Punjab)<br>Next-Day Pred (2026-11-25): 109.76 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 74.00 µg/m³</div>`)[0];
+                popup_cc889ee4ae1e63cc08bf31eb8e741327.setContent(html_090ea2b912c9407d21df89bf0e5627f9);
+            
+        
+
+        circle_marker_a29a945becc44318e8befcd8ceeb7629.bindPopup(popup_cc889ee4ae1e63cc08bf31eb8e741327)
+        ;
+
+        
+    
+    
+            var circle_marker_935777da00713f4cc9d358aad1766b4c = L.circleMarker(
+                [32.49, 74.52],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_5c4934dba1535b94114985559a1bb738 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_18561cbcf2767230c90792d82ba557c7 = $(`<div id="html_18561cbcf2767230c90792d82ba557c7" style="width: 100.0%; height: 100.0%;"><b>Sialkot</b> (Punjab)<br>Next-Day Pred (2026-11-25): 112.41 µg/m³ (Unhealthy)<br>Winter Smog Risk: 100.0%<br>Last Actual: 97.13 µg/m³</div>`)[0];
+                popup_5c4934dba1535b94114985559a1bb738.setContent(html_18561cbcf2767230c90792d82ba557c7);
+            
+        
+
+        circle_marker_935777da00713f4cc9d358aad1766b4c.bindPopup(popup_5c4934dba1535b94114985559a1bb738)
+        ;
+
+        
+    
+    
+            var circle_marker_a6c3728c0acd287dc5ef2523f7079fa1 = L.circleMarker(
+                [27.71, 68.86],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_9d600ce89a75675575a6b55bc43dabd1);
+        
+    
+        var popup_f510535f3e85a2adfc813f92cbc1e5b4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_49078d2ba731d8b8de53f57efd0ec2de = $(`<div id="html_49078d2ba731d8b8de53f57efd0ec2de" style="width: 100.0%; height: 100.0%;"><b>Sukkur</b> (Sindh)<br>Next-Day Pred (2026-11-25): 74.58 µg/m³ (Unhealthy)<br>Winter Smog Risk: 97.9%<br>Last Actual: 78.32 µg/m³</div>`)[0];
+                popup_f510535f3e85a2adfc813f92cbc1e5b4.setContent(html_49078d2ba731d8b8de53f57efd0ec2de);
+            
+        
+
+        circle_marker_a6c3728c0acd287dc5ef2523f7079fa1.bindPopup(popup_f510535f3e85a2adfc813f92cbc1e5b4)
+        ;
+
+        
+    
+</script>
+</html>
