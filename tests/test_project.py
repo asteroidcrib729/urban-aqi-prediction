@@ -149,13 +149,13 @@ class TestPakistanAqiProject(unittest.TestCase):
             ".gitattributes",
             "LICENSE",
             "README.md",
-            "scripts/fetch_pakistan_data.py",
             ".vscode/settings.json",
             ".vscode/extensions.json",
         ]
         for rel_path in required_files:
             with self.subTest(file=rel_path):
                 self.assertTrue((ROOT / rel_path).is_file(), f"Missing {rel_path}")
+        self.assertFalse((ROOT / "scripts").exists(), "No standalone scripts/ folder allowed")
 
         self.assertEqual((ROOT / ".python-version").read_text(encoding="utf-8").strip(), "3.14.7")
         license_first_line = (ROOT / "LICENSE").read_text(encoding="utf-8").splitlines()[0]
@@ -173,7 +173,7 @@ class TestPakistanAqiProject(unittest.TestCase):
         self.assertEqual(nb["metadata"]["language_info"]["version"], "3.14.7")
 
         code_cells = [c for c in nb["cells"] if c["cell_type"] == "code"]
-        self.assertEqual(len(code_cells), 7)
+        self.assertEqual(len(code_cells), 8)
 
         full_source = []
         for idx, cell in enumerate(code_cells):
@@ -201,6 +201,52 @@ class TestPakistanAqiProject(unittest.TestCase):
         self.assertIn("Esri.WorldTopoMap", combined)
         self.assertIn("folium.Popup(", combined)
         self.assertIn("max_width=280", combined)
+        self.assertIn("DatasetValidationError", combined)
+        self.assertIn("validate_and_clean_dataset", combined)
+        self.assertIn("load_or_fetch_pakistan_dataset", combined)
+
+    def test_dataset_edge_case_validation(self) -> None:
+        nb = json.loads(NOTEBOOK_PATH.read_text(encoding="utf-8"))
+        code_cells = [c for c in nb["cells"] if c["cell_type"] == "code"]
+        setup_src = "".join(code_cells[0]["source"])
+        helpers_src = "".join(code_cells[1]["source"]).split(
+            "df = load_or_fetch_pakistan_dataset"
+        )[0]
+        ns: dict = {}
+        exec(compile(setup_src, "<nb_cell_0>", "exec"), ns)
+        exec(compile(helpers_src, "<nb_cell_1>", "exec"), ns)
+
+        err_cls = ns["DatasetValidationError"]
+        validate_fn = ns["validate_and_clean_dataset"]
+        classify_fn = ns["_classify_pm25_category"]
+        hourly_fn = ns["_build_hourly_frame"]
+
+        with self.assertRaises(err_cls):
+            validate_fn(pd.DataFrame())
+        with self.assertRaises(err_cls):
+            validate_fn(pd.DataFrame({"date": ["2024-01-01"], "city": ["Lahore"]}))
+        with self.assertRaises(err_cls):
+            classify_fn(float("nan"))
+        with self.assertRaises(err_cls):
+            classify_fn(-1.0)
+        with self.assertRaises(err_cls):
+            hourly_fn({"time": ["2024-01-01T00:00"], "pm2_5": []}, ["time", "pm2_5"], "Test")
+
+        sample_df = pd.read_csv(DATASET_PATH, nrows=30)
+        bad_date_df = sample_df.copy()
+        bad_date_df.loc[0, "date"] = "not-a-date"
+        with self.assertRaises(err_cls):
+            validate_fn(bad_date_df)
+
+        bad_hum_df = sample_df.copy()
+        bad_hum_df.loc[0, "humidity_mean"] = 140.0
+        with self.assertRaises(err_cls):
+            validate_fn(bad_hum_df)
+
+        bad_temp_df = sample_df.copy()
+        bad_temp_df.loc[0, "temp_max"] = float(bad_temp_df["temp_min"].to_numpy()[0]) - 5.0
+        with self.assertRaises(err_cls):
+            validate_fn(bad_temp_df)
 
     def test_dataset_schema_and_invariants(self) -> None:
         df = pd.read_csv(DATASET_PATH)

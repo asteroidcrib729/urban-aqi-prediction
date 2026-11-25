@@ -7,13 +7,12 @@ monitoring dashboard unified in a single Jupyter notebook.
 
 ## Project Structure
 
-- `scripts/fetch_pakistan_data.py` - Reproducible Open-Meteo data pipeline
-  fetching hourly CAMS air quality + ERA5 historical weather across 30 Pakistani
-  cities (`2022-08-05` to `2026-11-24`) and aggregating them into daily records
-  with zero missing values.
 - `urban-aqi-prediction.ipynb` - Unified end-to-end notebook covering:
-  1. **Environment Setup & Data Loading** - Loads
-     `dataset/pakistan_air_quality_daily.csv`, parses dates (`%Y-%m-%d`),
+  1. **Environment Setup, Data Acquisition & Validation** - Loads
+     `dataset/pakistan_air_quality_daily.csv` (or automatically fetches &
+     aggregates Open-Meteo CAMS + ERA5 data when missing/corrupt or when
+     `REFRESH_DATASET = True`), enforces schema/range/null invariants with
+     comprehensive edge-case exception handling, parses dates (`%Y-%m-%d`),
      encodes `city_id` (`0-29`), and derives meteorological inversion and
      calendar features (`temp_range`, `dew_point_spread`, `month`,
      `day_of_week`, `day_of_year`).
@@ -118,21 +117,16 @@ project-local `.venv`.
    pip install -r requirements.txt
    ```
 
-3. (Optional) Refresh `dataset/pakistan_air_quality_daily.csv` from Open-Meteo:
-
-   ```bash
-   python scripts/fetch_pakistan_data.py
-   ```
-
-4. Run static checks and automated verification tests:
+3. Run static checks and automated verification tests:
 
    ```bash
    pyrefly check
    python -m unittest discover -s tests -v
    ```
 
-5. Open and run `urban-aqi-prediction.ipynb` in VS Code (select the Python
-   `3.14.7` kernel) or via standalone Jupyter:
+4. Open and run `urban-aqi-prediction.ipynb` in VS Code (select the Python
+   `3.14.7` kernel; set `REFRESH_DATASET = True` in Cell 1 to re-fetch from
+   Open-Meteo) or via standalone Jupyter:
 
    ```bash
    pip install notebook
