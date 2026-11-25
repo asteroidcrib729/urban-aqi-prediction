@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Ruff, Pyrefly & Verification Tests (Python 3.14)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies and linters
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyrefly ruff
+
+      - name: Run Ruff lint checks
+        run: ruff check .
+
+      - name: Run Pyrefly type checks
+        run: |
+          SITE_PKGS="$(python -c 'import site; print(site.getsitepackages()[0])')"
+          pyrefly check --python-interpreter-path "$(which python)" --site-packages-path "$SITE_PKGS"
+
+      - name: Run verification tests
+        run: python -m unittest discover -s tests -v
