@@ -203,7 +203,21 @@ class TestUrbanAqiProject(unittest.TestCase):
         self.assertAlmostEqual(mae, 6.31, places=2)
         self.assertAlmostEqual(r2, 0.8414, places=4)
 
-    def test_folium_map_deliverable_and_tile_provider(self) -> None:
+    def test_visualization_exports_and_map_provider(self) -> None:
+        expected_pngs = [
+            "eda_overview.png",
+            "delhi_pacf.png",
+            "model_evaluation.png",
+            "city_dashboard_overview.png",
+        ]
+        for filename in expected_pngs:
+            img_path = ROOT / "visualizations" / filename
+            with self.subTest(image=filename):
+                self.assertTrue(img_path.is_file(), f"Missing visualizations/{filename}")
+                raw = img_path.read_bytes()
+                self.assertGreater(len(raw), 10000)
+                self.assertEqual(raw[:8], b"\x89PNG\r\n\x1a\n")
+
         self.assertTrue(MAP_PATH.is_file(), "Missing visualizations/air_quality_map.html")
         html = MAP_PATH.read_text(encoding="utf-8")
         self.assertGreater(len(html), 10000)
