@@ -1,0 +1,35 @@
+[project]
+name = "urban-aqi-prediction"
+version = "0.1.0"
+description = "End-to-end exploratory data analysis, leak-free next-day PM2.5 forecasting, and interactive 50-city air quality dashboard."
+readme = "README.md"
+requires-python = ">=3.14.7,<3.15"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Faraz Hussain" }]
+dependencies = [
+    "folium>=1.0.0,<2",
+    "ipykernel>=7.2.0,<8",
+    "ipython>=9.11.0,<10",
+    "ipywidgets>=8.1.9,<9",
+    "joblib>=1.6.0,<2",
+    "jupyter_client>=8.8.0,<9",
+    "matplotlib>=3.11.2,<4",
+    "numpy>=2.5.5,<3",
+    "pandas>=3.1.1,<4",
+    "scikit-learn>=1.9.1,<2",
+    "seaborn>=0.13.2,<1",
+    "statsmodels>=0.15.0,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pandas-stubs>=3.1.0.261029",
+    "types-seaborn>=0.13.2.20261122",
+]
+
+[tool.ruff]
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

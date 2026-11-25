@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "ms-python.vscode-python-envs",
+        "meta.pyrefly",
+        "ms-toolsai.jupyter",
+        "charliermarsh.ruff",
+        "davidanson.vscode-markdownlint"
+    ]
+}

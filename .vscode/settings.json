@@ -1,0 +1,18 @@
+{
+    "python.defaultInterpreterPath": "C:\\Users\\DESKTOP-Q2TMP8U\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.defaultPackageManager": "ms-python.python:pip",
+    "python.languageServer": "None",
+    "pyrefly.pyreflyExecutable": "bundled",
+    "python.pyrefly.diagnosticMode": "workspace",
+    "python.pyrefly.syncNotebooks": true,
+    "ruff.interpreter": [
+        "C:\\Users\\DESKTOP-Q2TMP8U\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe"
+    ],
+    "jupyter.excludeUserSitePackages": false,
+    "jupyter.kernels.excludePythonEnvironments": [
+        "C:\\ProgramData\\anaconda3\\python.exe",
+        "C:\\Users\\DESKTOP-Q2TMP8U\\AppData\\Local\\Python\\pythoncore-3.12-64\\python.exe",
+        "C:\\Users\\DESKTOP-Q2TMP8U\\Downloads\\Source-Code\\employee-management-system\\.uv-cache\\python\\cpython-3.14.7-windows-x86_64-none\\python.exe"
+    ]
+}

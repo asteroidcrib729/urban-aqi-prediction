@@ -1,0 +1,13 @@
+project-includes = ["**/*.py*", "**/*.ipynb"]
+project-excludes = [
+    "**/.git/**",
+    "**/.venv/**",
+    "**/__pycache__/**",
+    "**/.ipynb_checkpoints/**",
+]
+python-interpreter-path = "C:\\Users\\DESKTOP-Q2TMP8U\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe"
+python-version = "3.14"
+site-package-path = [
+    "C:\\Users\\DESKTOP-Q2TMP8U\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages",
+    "C:\\Users\\DESKTOP-Q2TMP8U\\AppData\\Roaming\\Python\\Python314\\site-packages",
+]
