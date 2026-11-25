@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_26ae96b81797a4d4936023f256de2db3 {
+                    position: relative;
+                    width: 100.0vw;
+                    height: 100.0vh;
+
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>/*
+ * Glyphicons Halflings -- the icon font used by folium's default Awesome Markers
+ * (Icon(prefix="glyphicon")). Extracted from Bootstrap 3's glyphicon rules only.
+ *
+ * folium previously loaded netdna's bootstrap-glyphicons.css, which despite its
+ * name ships a full Bootstrap-3 base stylesheet (normalize reset + global `body`
+ * rules) that leaked onto the host page (GH-1820). This file provides just the
+ * @font-face and .glyphicon/.glyphicon-* rules needed for the markers, with no
+ * page-wide side effects. Font files are served from jsDelivr.
+ */
+@font-face{font-family:'Glyphicons Halflings';src:url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot');src:url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),url('https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');}.glyphicon{position:relative;top:1px;display:inline-block;font-family:'Glyphicons Halflings';font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;}
+.glyphicon-asterisk:before{content:"\2a";}
+.glyphicon-plus:before{content:"\2b";}
+.glyphicon-euro:before{content:"\20ac";}
+.glyphicon-minus:before{content:"\2212";}
+.glyphicon-cloud:before{content:"\2601";}
+.glyphicon-envelope:before{content:"\2709";}
+.glyphicon-pencil:before{content:"\270f";}
+.glyphicon-glass:before{content:"\e001";}
+.glyphicon-music:before{content:"\e002";}
+.glyphicon-search:before{content:"\e003";}
+.glyphicon-heart:before{content:"\e005";}
+.glyphicon-star:before{content:"\e006";}
+.glyphicon-star-empty:before{content:"\e007";}
+.glyphicon-user:before{content:"\e008";}
+.glyphicon-film:before{content:"\e009";}
+.glyphicon-th-large:before{content:"\e010";}
+.glyphicon-th:before{content:"\e011";}
+.glyphicon-th-list:before{content:"\e012";}
+.glyphicon-ok:before{content:"\e013";}
+.glyphicon-remove:before{content:"\e014";}
+.glyphicon-zoom-in:before{content:"\e015";}
+.glyphicon-zoom-out:before{content:"\e016";}
+.glyphicon-off:before{content:"\e017";}
+.glyphicon-signal:before{content:"\e018";}
+.glyphicon-cog:before{content:"\e019";}
+.glyphicon-trash:before{content:"\e020";}
+.glyphicon-home:before{content:"\e021";}
+.glyphicon-file:before{content:"\e022";}
+.glyphicon-time:before{content:"\e023";}
+.glyphicon-road:before{content:"\e024";}
+.glyphicon-download-alt:before{content:"\e025";}
+.glyphicon-download:before{content:"\e026";}
+.glyphicon-upload:before{content:"\e027";}
+.glyphicon-inbox:before{content:"\e028";}
+.glyphicon-play-circle:before{content:"\e029";}
+.glyphicon-repeat:before{content:"\e030";}
+.glyphicon-refresh:before{content:"\e031";}
+.glyphicon-list-alt:before{content:"\e032";}
+.glyphicon-flag:before{content:"\e034";}
+.glyphicon-headphones:before{content:"\e035";}
+.glyphicon-volume-off:before{content:"\e036";}
+.glyphicon-volume-down:before{content:"\e037";}
+.glyphicon-volume-up:before{content:"\e038";}
+.glyphicon-qrcode:before{content:"\e039";}
+.glyphicon-barcode:before{content:"\e040";}
+.glyphicon-tag:before{content:"\e041";}
+.glyphicon-tags:before{content:"\e042";}
+.glyphicon-book:before{content:"\e043";}
+.glyphicon-print:before{content:"\e045";}
+.glyphicon-font:before{content:"\e047";}
+.glyphicon-bold:before{content:"\e048";}
+.glyphicon-italic:before{content:"\e049";}
+.glyphicon-text-height:before{content:"\e050";}
+.glyphicon-text-width:before{content:"\e051";}
+.glyphicon-align-left:before{content:"\e052";}
+.glyphicon-align-center:before{content:"\e053";}
+.glyphicon-align-right:before{content:"\e054";}
+.glyphicon-align-justify:before{content:"\e055";}
+.glyphicon-list:before{content:"\e056";}
+.glyphicon-indent-left:before{content:"\e057";}
+.glyphicon-indent-right:before{content:"\e058";}
+.glyphicon-facetime-video:before{content:"\e059";}
+.glyphicon-picture:before{content:"\e060";}
+.glyphicon-map-marker:before{content:"\e062";}
+.glyphicon-adjust:before{content:"\e063";}
+.glyphicon-tint:before{content:"\e064";}
+.glyphicon-edit:before{content:"\e065";}
+.glyphicon-share:before{content:"\e066";}
+.glyphicon-check:before{content:"\e067";}
+.glyphicon-move:before{content:"\e068";}
+.glyphicon-step-backward:before{content:"\e069";}
+.glyphicon-fast-backward:before{content:"\e070";}
+.glyphicon-backward:before{content:"\e071";}
+.glyphicon-play:before{content:"\e072";}
+.glyphicon-pause:before{content:"\e073";}
+.glyphicon-stop:before{content:"\e074";}
+.glyphicon-forward:before{content:"\e075";}
+.glyphicon-fast-forward:before{content:"\e076";}
+.glyphicon-step-forward:before{content:"\e077";}
+.glyphicon-eject:before{content:"\e078";}
+.glyphicon-chevron-left:before{content:"\e079";}
+.glyphicon-chevron-right:before{content:"\e080";}
+.glyphicon-plus-sign:before{content:"\e081";}
+.glyphicon-minus-sign:before{content:"\e082";}
+.glyphicon-remove-sign:before{content:"\e083";}
+.glyphicon-ok-sign:before{content:"\e084";}
+.glyphicon-question-sign:before{content:"\e085";}
+.glyphicon-info-sign:before{content:"\e086";}
+.glyphicon-screenshot:before{content:"\e087";}
+.glyphicon-remove-circle:before{content:"\e088";}
+.glyphicon-ok-circle:before{content:"\e089";}
+.glyphicon-ban-circle:before{content:"\e090";}
+.glyphicon-arrow-left:before{content:"\e091";}
+.glyphicon-arrow-right:before{content:"\e092";}
+.glyphicon-arrow-up:before{content:"\e093";}
+.glyphicon-arrow-down:before{content:"\e094";}
+.glyphicon-share-alt:before{content:"\e095";}
+.glyphicon-resize-full:before{content:"\e096";}
+.glyphicon-resize-small:before{content:"\e097";}
+.glyphicon-exclamation-sign:before{content:"\e101";}
+.glyphicon-gift:before{content:"\e102";}
+.glyphicon-leaf:before{content:"\e103";}
+.glyphicon-eye-open:before{content:"\e105";}
+.glyphicon-eye-close:before{content:"\e106";}
+.glyphicon-warning-sign:before{content:"\e107";}
+.glyphicon-plane:before{content:"\e108";}
+.glyphicon-random:before{content:"\e110";}
+.glyphicon-comment:before{content:"\e111";}
+.glyphicon-magnet:before{content:"\e112";}
+.glyphicon-chevron-up:before{content:"\e113";}
+.glyphicon-chevron-down:before{content:"\e114";}
+.glyphicon-retweet:before{content:"\e115";}
+.glyphicon-shopping-cart:before{content:"\e116";}
+.glyphicon-folder-close:before{content:"\e117";}
+.glyphicon-folder-open:before{content:"\e118";}
+.glyphicon-resize-vertical:before{content:"\e119";}
+.glyphicon-resize-horizontal:before{content:"\e120";}
+.glyphicon-hdd:before{content:"\e121";}
+.glyphicon-bullhorn:before{content:"\e122";}
+.glyphicon-certificate:before{content:"\e124";}
+.glyphicon-thumbs-up:before{content:"\e125";}
+.glyphicon-thumbs-down:before{content:"\e126";}
+.glyphicon-hand-right:before{content:"\e127";}
+.glyphicon-hand-left:before{content:"\e128";}
+.glyphicon-hand-up:before{content:"\e129";}
+.glyphicon-hand-down:before{content:"\e130";}
+.glyphicon-circle-arrow-right:before{content:"\e131";}
+.glyphicon-circle-arrow-left:before{content:"\e132";}
+.glyphicon-circle-arrow-up:before{content:"\e133";}
+.glyphicon-circle-arrow-down:before{content:"\e134";}
+.glyphicon-globe:before{content:"\e135";}
+.glyphicon-tasks:before{content:"\e137";}
+.glyphicon-filter:before{content:"\e138";}
+.glyphicon-fullscreen:before{content:"\e140";}
+.glyphicon-dashboard:before{content:"\e141";}
+.glyphicon-heart-empty:before{content:"\e143";}
+.glyphicon-link:before{content:"\e144";}
+.glyphicon-phone:before{content:"\e145";}
+.glyphicon-usd:before{content:"\e148";}
+.glyphicon-gbp:before{content:"\e149";}
+.glyphicon-sort:before{content:"\e150";}
+.glyphicon-sort-by-alphabet:before{content:"\e151";}
+.glyphicon-sort-by-alphabet-alt:before{content:"\e152";}
+.glyphicon-sort-by-order:before{content:"\e153";}
+.glyphicon-sort-by-order-alt:before{content:"\e154";}
+.glyphicon-sort-by-attributes:before{content:"\e155";}
+.glyphicon-sort-by-attributes-alt:before{content:"\e156";}
+.glyphicon-unchecked:before{content:"\e157";}
+.glyphicon-expand:before{content:"\e158";}
+.glyphicon-collapse-down:before{content:"\e159";}
+.glyphicon-collapse-up:before{content:"\e160";}
+.glyphicon-log-in:before{content:"\e161";}
+.glyphicon-flash:before{content:"\e162";}
+.glyphicon-log-out:before{content:"\e163";}
+.glyphicon-new-window:before{content:"\e164";}
+.glyphicon-record:before{content:"\e165";}
+.glyphicon-save:before{content:"\e166";}
+.glyphicon-open:before{content:"\e167";}
+.glyphicon-saved:before{content:"\e168";}
+.glyphicon-import:before{content:"\e169";}
+.glyphicon-export:before{content:"\e170";}
+.glyphicon-send:before{content:"\e171";}
+.glyphicon-floppy-disk:before{content:"\e172";}
+.glyphicon-floppy-saved:before{content:"\e173";}
+.glyphicon-floppy-remove:before{content:"\e174";}
+.glyphicon-floppy-save:before{content:"\e175";}
+.glyphicon-floppy-open:before{content:"\e176";}
+.glyphicon-credit-card:before{content:"\e177";}
+.glyphicon-transfer:before{content:"\e178";}
+.glyphicon-cutlery:before{content:"\e179";}
+.glyphicon-header:before{content:"\e180";}
+.glyphicon-compressed:before{content:"\e181";}
+.glyphicon-earphone:before{content:"\e182";}
+.glyphicon-phone-alt:before{content:"\e183";}
+.glyphicon-tower:before{content:"\e184";}
+.glyphicon-stats:before{content:"\e185";}
+.glyphicon-sd-video:before{content:"\e186";}
+.glyphicon-hd-video:before{content:"\e187";}
+.glyphicon-subtitles:before{content:"\e188";}
+.glyphicon-sound-stereo:before{content:"\e189";}
+.glyphicon-sound-dolby:before{content:"\e190";}
+.glyphicon-sound-5-1:before{content:"\e191";}
+.glyphicon-sound-6-1:before{content:"\e192";}
+.glyphicon-sound-7-1:before{content:"\e193";}
+.glyphicon-copyright-mark:before{content:"\e194";}
+.glyphicon-registration-mark:before{content:"\e195";}
+.glyphicon-cloud-download:before{content:"\e197";}
+.glyphicon-cloud-upload:before{content:"\e198";}
+.glyphicon-tree-conifer:before{content:"\e199";}
+.glyphicon-tree-deciduous:before{content:"\e200";}
+.glyphicon-briefcase:before{content:"\1f4bc";}
+.glyphicon-calendar:before{content:"\1f4c5";}
+.glyphicon-pushpin:before{content:"\1f4cc";}
+.glyphicon-paperclip:before{content:"\1f4ce";}
+.glyphicon-camera:before{content:"\1f4f7";}
+.glyphicon-lock:before{content:"\1f512";}
+.glyphicon-bell:before{content:"\1f514";}
+.glyphicon-bookmark:before{content:"\1f516";}
+.glyphicon-fire:before{content:"\1f525";}
+.glyphicon-wrench:before{content:"\1f527";}
+</style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_26ae96b81797a4d4936023f256de2db3" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_26ae96b81797a4d4936023f256de2db3 = L.map(
+                "map_26ae96b81797a4d4936023f256de2db3",
+                {
+                    center: [22.5, 79.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_a34a7e3fccb5a856c3ff61ddf59cc257 = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Tiles \u0026copy; Esri \u0026mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a34a7e3fccb5a856c3ff61ddf59cc257.addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+            var circle_marker_cf1b90e22560fcc85765dca64ae48d5f = L.circleMarker(
+                [23.8315, 91.2868],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_0c1cfaad76e5f6ae4385b27bbc01299f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e5453168f7d3d5e9ecbd8756fe295e65 = $(`<div id="html_e5453168f7d3d5e9ecbd8756fe295e65" style="width: 100.0%; height: 100.0%;"><b>Agartala</b><br>Next-Day Pred (2026-11-22): 35.49 µg/m³ (Satisfactory)<br>Last Actual: 18.21 µg/m³</div>`)[0];
+                popup_0c1cfaad76e5f6ae4385b27bbc01299f.setContent(html_e5453168f7d3d5e9ecbd8756fe295e65);
+            
+        
+
+        circle_marker_cf1b90e22560fcc85765dca64ae48d5f.bindPopup(popup_0c1cfaad76e5f6ae4385b27bbc01299f)
+        ;
+
+        
+    
+    
+            var circle_marker_8830563fd0924e97a1ed26ebdd96c35a = L.circleMarker(
+                [27.1767, 78.0081],
+                {"bubblingMouseEvents": true, "color": "#e74c3c", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e74c3c", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_34d6f9a68fdf9cb7b4a22e6a3193f132 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_24ac10defc60369d17edc68cad7153d4 = $(`<div id="html_24ac10defc60369d17edc68cad7153d4" style="width: 100.0%; height: 100.0%;"><b>Agra</b><br>Next-Day Pred (2026-11-22): 120.50 µg/m³ (Very Poor)<br>Last Actual: 120.81 µg/m³</div>`)[0];
+                popup_34d6f9a68fdf9cb7b4a22e6a3193f132.setContent(html_24ac10defc60369d17edc68cad7153d4);
+            
+        
+
+        circle_marker_8830563fd0924e97a1ed26ebdd96c35a.bindPopup(popup_34d6f9a68fdf9cb7b4a22e6a3193f132)
+        ;
+
+        
+    
+    
+            var circle_marker_e2bb0fd84bb0b4126640b72358472ace = L.circleMarker(
+                [23.0225, 72.5714],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_f9225a34829ac3f951205b684392fefd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2fabd41023945de1a7e372e3ce737c56 = $(`<div id="html_2fabd41023945de1a7e372e3ce737c56" style="width: 100.0%; height: 100.0%;"><b>Ahmedabad</b><br>Next-Day Pred (2026-11-22): 51.74 µg/m³ (Satisfactory)<br>Last Actual: 50.22 µg/m³</div>`)[0];
+                popup_f9225a34829ac3f951205b684392fefd.setContent(html_2fabd41023945de1a7e372e3ce737c56);
+            
+        
+
+        circle_marker_e2bb0fd84bb0b4126640b72358472ace.bindPopup(popup_f9225a34829ac3f951205b684392fefd)
+        ;
+
+        
+    
+    
+            var circle_marker_907d080b78875f49b52909fa6cabd978 = L.circleMarker(
+                [31.634, 74.8723],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_27da32adc97b249efa43f90da3bb1dd0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4fde0a611c7a338ac83f862d46e98950 = $(`<div id="html_4fde0a611c7a338ac83f862d46e98950" style="width: 100.0%; height: 100.0%;"><b>Amritsar</b><br>Next-Day Pred (2026-11-22): 118.17 µg/m³ (Poor)<br>Last Actual: 135.25 µg/m³</div>`)[0];
+                popup_27da32adc97b249efa43f90da3bb1dd0.setContent(html_4fde0a611c7a338ac83f862d46e98950);
+            
+        
+
+        circle_marker_907d080b78875f49b52909fa6cabd978.bindPopup(popup_27da32adc97b249efa43f90da3bb1dd0)
+        ;
+
+        
+    
+    
+            var circle_marker_ce5999c5bdf7866df17e25778e6dc3c9 = L.circleMarker(
+                [12.9716, 77.5946],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_f2a33facb2f59b0ed4d51c89be99912a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_efb85c68e4c17ad763dc34f4a1844f5b = $(`<div id="html_efb85c68e4c17ad763dc34f4a1844f5b" style="width: 100.0%; height: 100.0%;"><b>Bengaluru</b><br>Next-Day Pred (2026-11-22): 67.18 µg/m³ (Moderate)<br>Last Actual: 65.62 µg/m³</div>`)[0];
+                popup_f2a33facb2f59b0ed4d51c89be99912a.setContent(html_efb85c68e4c17ad763dc34f4a1844f5b);
+            
+        
+
+        circle_marker_ce5999c5bdf7866df17e25778e6dc3c9.bindPopup(popup_f2a33facb2f59b0ed4d51c89be99912a)
+        ;
+
+        
+    
+    
+            var circle_marker_a051419519ade49fec467e11997a0c10 = L.circleMarker(
+                [23.2599, 77.4126],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_394f403d9bdadca06c1d588fba71da81 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_332b846e83e5488ed24248edf546aba6 = $(`<div id="html_332b846e83e5488ed24248edf546aba6" style="width: 100.0%; height: 100.0%;"><b>Bhopal</b><br>Next-Day Pred (2026-11-22): 49.29 µg/m³ (Satisfactory)<br>Last Actual: 50.58 µg/m³</div>`)[0];
+                popup_394f403d9bdadca06c1d588fba71da81.setContent(html_332b846e83e5488ed24248edf546aba6);
+            
+        
+
+        circle_marker_a051419519ade49fec467e11997a0c10.bindPopup(popup_394f403d9bdadca06c1d588fba71da81)
+        ;
+
+        
+    
+    
+            var circle_marker_05a055bf610a8c9b8c33818ac3329c53 = L.circleMarker(
+                [20.2961, 85.8245],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_e8af362e9ae90ffc08dd8244165bc957 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8375132ac95e1c6b94decf0ce36ca857 = $(`<div id="html_8375132ac95e1c6b94decf0ce36ca857" style="width: 100.0%; height: 100.0%;"><b>Bhubaneswar</b><br>Next-Day Pred (2026-11-22): 32.99 µg/m³ (Satisfactory)<br>Last Actual: 14.78 µg/m³</div>`)[0];
+                popup_e8af362e9ae90ffc08dd8244165bc957.setContent(html_8375132ac95e1c6b94decf0ce36ca857);
+            
+        
+
+        circle_marker_05a055bf610a8c9b8c33818ac3329c53.bindPopup(popup_e8af362e9ae90ffc08dd8244165bc957)
+        ;
+
+        
+    
+    
+            var circle_marker_702f1cf7a8481f8deafcf854ec05655c = L.circleMarker(
+                [30.7333, 76.7794],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_6501f479b8effb40d5e8759bf2850e26 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ebeac1d2290c7d025196210f85bc1526 = $(`<div id="html_ebeac1d2290c7d025196210f85bc1526" style="width: 100.0%; height: 100.0%;"><b>Chandigarh</b><br>Next-Day Pred (2026-11-22): 64.54 µg/m³ (Moderate)<br>Last Actual: 70.12 µg/m³</div>`)[0];
+                popup_6501f479b8effb40d5e8759bf2850e26.setContent(html_ebeac1d2290c7d025196210f85bc1526);
+            
+        
+
+        circle_marker_702f1cf7a8481f8deafcf854ec05655c.bindPopup(popup_6501f479b8effb40d5e8759bf2850e26)
+        ;
+
+        
+    
+    
+            var circle_marker_5b764584f527501f82fb7934f97c35df = L.circleMarker(
+                [13.0827, 80.2707],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_cedf2d6813c87473ff35761e0f435735 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f2d2d3f546db3faa9d6789a3ae0ad3a4 = $(`<div id="html_f2d2d3f546db3faa9d6789a3ae0ad3a4" style="width: 100.0%; height: 100.0%;"><b>Chennai</b><br>Next-Day Pred (2026-11-22): 60.42 µg/m³ (Moderate)<br>Last Actual: 62.15 µg/m³</div>`)[0];
+                popup_cedf2d6813c87473ff35761e0f435735.setContent(html_f2d2d3f546db3faa9d6789a3ae0ad3a4);
+            
+        
+
+        circle_marker_5b764584f527501f82fb7934f97c35df.bindPopup(popup_cedf2d6813c87473ff35761e0f435735)
+        ;
+
+        
+    
+    
+            var circle_marker_e09f3ce7c702282aaeb82b9303c2dd36 = L.circleMarker(
+                [11.0168, 76.9558],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_fa96a3aa7f1af6143cd790df7575e6e4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ad15d0466b05d036a025b9893eda4f7c = $(`<div id="html_ad15d0466b05d036a025b9893eda4f7c" style="width: 100.0%; height: 100.0%;"><b>Coimbatore</b><br>Next-Day Pred (2026-11-22): 42.61 µg/m³ (Satisfactory)<br>Last Actual: 43.89 µg/m³</div>`)[0];
+                popup_fa96a3aa7f1af6143cd790df7575e6e4.setContent(html_ad15d0466b05d036a025b9893eda4f7c);
+            
+        
+
+        circle_marker_e09f3ce7c702282aaeb82b9303c2dd36.bindPopup(popup_fa96a3aa7f1af6143cd790df7575e6e4)
+        ;
+
+        
+    
+    
+            var circle_marker_15dba487701a60bfeac275ec5335a562 = L.circleMarker(
+                [30.3165, 78.0322],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_b27d335ff51a30337658ad194c0b8eaa = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2fef723581fd1ea576a08974a86b101b = $(`<div id="html_2fef723581fd1ea576a08974a86b101b" style="width: 100.0%; height: 100.0%;"><b>Dehradun</b><br>Next-Day Pred (2026-11-22): 48.94 µg/m³ (Satisfactory)<br>Last Actual: 44.82 µg/m³</div>`)[0];
+                popup_b27d335ff51a30337658ad194c0b8eaa.setContent(html_2fef723581fd1ea576a08974a86b101b);
+            
+        
+
+        circle_marker_15dba487701a60bfeac275ec5335a562.bindPopup(popup_b27d335ff51a30337658ad194c0b8eaa)
+        ;
+
+        
+    
+    
+            var circle_marker_42a48875f85f071c1ec43f526691a865 = L.circleMarker(
+                [28.6139, 77.209],
+                {"bubblingMouseEvents": true, "color": "#e74c3c", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e74c3c", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_07180a92e68ab2eb0c16f806397412e8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5da767c51e4c68f5302aeba90ceaa77d = $(`<div id="html_5da767c51e4c68f5302aeba90ceaa77d" style="width: 100.0%; height: 100.0%;"><b>Delhi</b><br>Next-Day Pred (2026-11-22): 127.63 µg/m³ (Very Poor)<br>Last Actual: 141.28 µg/m³</div>`)[0];
+                popup_07180a92e68ab2eb0c16f806397412e8.setContent(html_5da767c51e4c68f5302aeba90ceaa77d);
+            
+        
+
+        circle_marker_42a48875f85f071c1ec43f526691a865.bindPopup(popup_07180a92e68ab2eb0c16f806397412e8)
+        ;
+
+        
+    
+    
+            var circle_marker_cfa849edb009951e81f2a04da9b3a8d9 = L.circleMarker(
+                [27.3389, 88.6065],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_73cd3278d5a7ccc984bef20390500247 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bd507bbcc86e30416f55c54508896877 = $(`<div id="html_bd507bbcc86e30416f55c54508896877" style="width: 100.0%; height: 100.0%;"><b>Gangtok</b><br>Next-Day Pred (2026-11-22): 26.11 µg/m³ (Good)<br>Last Actual: 18.50 µg/m³</div>`)[0];
+                popup_73cd3278d5a7ccc984bef20390500247.setContent(html_bd507bbcc86e30416f55c54508896877);
+            
+        
+
+        circle_marker_cfa849edb009951e81f2a04da9b3a8d9.bindPopup(popup_73cd3278d5a7ccc984bef20390500247)
+        ;
+
+        
+    
+    
+            var circle_marker_383f0d9e80e250f94644274ec0c17824 = L.circleMarker(
+                [26.1445, 91.7362],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_b521bc6dfdd9c147aa9b25d930dcee24 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_57d65feb097abec63b2e32c3f5aaaefc = $(`<div id="html_57d65feb097abec63b2e32c3f5aaaefc" style="width: 100.0%; height: 100.0%;"><b>Guwahati</b><br>Next-Day Pred (2026-11-22): 29.07 µg/m³ (Good)<br>Last Actual: 28.59 µg/m³</div>`)[0];
+                popup_b521bc6dfdd9c147aa9b25d930dcee24.setContent(html_57d65feb097abec63b2e32c3f5aaaefc);
+            
+        
+
+        circle_marker_383f0d9e80e250f94644274ec0c17824.bindPopup(popup_b521bc6dfdd9c147aa9b25d930dcee24)
+        ;
+
+        
+    
+    
+            var circle_marker_27149eb40bcad3a4e28b9053223d2c2f = L.circleMarker(
+                [26.2183, 78.1828],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_79191194d8ac350636f7df5c99efc93f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5e890826f6e07c87493a9c9ba108b82e = $(`<div id="html_5e890826f6e07c87493a9c9ba108b82e" style="width: 100.0%; height: 100.0%;"><b>Gwalior</b><br>Next-Day Pred (2026-11-22): 76.90 µg/m³ (Moderate)<br>Last Actual: 81.76 µg/m³</div>`)[0];
+                popup_79191194d8ac350636f7df5c99efc93f.setContent(html_5e890826f6e07c87493a9c9ba108b82e);
+            
+        
+
+        circle_marker_27149eb40bcad3a4e28b9053223d2c2f.bindPopup(popup_79191194d8ac350636f7df5c99efc93f)
+        ;
+
+        
+    
+    
+            var circle_marker_155a7ce387712a2be884821d39954626 = L.circleMarker(
+                [17.385, 78.4867],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_b11dfb6a451dfe4e30e7630cf50f4fb8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9edd885f157f59b061ba84a34891add2 = $(`<div id="html_9edd885f157f59b061ba84a34891add2" style="width: 100.0%; height: 100.0%;"><b>Hyderabad</b><br>Next-Day Pred (2026-11-22): 52.52 µg/m³ (Satisfactory)<br>Last Actual: 48.50 µg/m³</div>`)[0];
+                popup_b11dfb6a451dfe4e30e7630cf50f4fb8.setContent(html_9edd885f157f59b061ba84a34891add2);
+            
+        
+
+        circle_marker_155a7ce387712a2be884821d39954626.bindPopup(popup_b11dfb6a451dfe4e30e7630cf50f4fb8)
+        ;
+
+        
+    
+    
+            var circle_marker_5de93341ff15f4b2825fe40204a2dcaf = L.circleMarker(
+                [24.817, 93.9368],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_456e008b1f5bb2cf2ebffc657cbea9e9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_33357061957c56c8eaa1b8fc13ea2d19 = $(`<div id="html_33357061957c56c8eaa1b8fc13ea2d19" style="width: 100.0%; height: 100.0%;"><b>Imphal</b><br>Next-Day Pred (2026-11-22): 22.70 µg/m³ (Good)<br>Last Actual: 15.81 µg/m³</div>`)[0];
+                popup_456e008b1f5bb2cf2ebffc657cbea9e9.setContent(html_33357061957c56c8eaa1b8fc13ea2d19);
+            
+        
+
+        circle_marker_5de93341ff15f4b2825fe40204a2dcaf.bindPopup(popup_456e008b1f5bb2cf2ebffc657cbea9e9)
+        ;
+
+        
+    
+    
+            var circle_marker_e630e4eec5ededf3e4ff0581b74137dc = L.circleMarker(
+                [22.7196, 75.8577],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_959b4b1409b6621ccae77f002b09a981 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_73c8818a924eb292bb5b9b6d2878614b = $(`<div id="html_73c8818a924eb292bb5b9b6d2878614b" style="width: 100.0%; height: 100.0%;"><b>Indore</b><br>Next-Day Pred (2026-11-22): 57.60 µg/m³ (Satisfactory)<br>Last Actual: 55.35 µg/m³</div>`)[0];
+                popup_959b4b1409b6621ccae77f002b09a981.setContent(html_73c8818a924eb292bb5b9b6d2878614b);
+            
+        
+
+        circle_marker_e630e4eec5ededf3e4ff0581b74137dc.bindPopup(popup_959b4b1409b6621ccae77f002b09a981)
+        ;
+
+        
+    
+    
+            var circle_marker_5658001fe486c01e5a258120e60c0875 = L.circleMarker(
+                [26.9124, 75.7873],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_ac51bbd54b57099ad76db3136ecbe578 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_03df5f3e0c7290f9502a431b846a4c04 = $(`<div id="html_03df5f3e0c7290f9502a431b846a4c04" style="width: 100.0%; height: 100.0%;"><b>Jaipur</b><br>Next-Day Pred (2026-11-22): 64.93 µg/m³ (Moderate)<br>Last Actual: 68.29 µg/m³</div>`)[0];
+                popup_ac51bbd54b57099ad76db3136ecbe578.setContent(html_03df5f3e0c7290f9502a431b846a4c04);
+            
+        
+
+        circle_marker_5658001fe486c01e5a258120e60c0875.bindPopup(popup_ac51bbd54b57099ad76db3136ecbe578)
+        ;
+
+        
+    
+    
+            var circle_marker_477eed5212c1a16bf4144d0da8760c7e = L.circleMarker(
+                [32.7266, 74.857],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_310766c05ad12a5287d14ed1e5ee27e5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_003cc4893a61b82a1399a48ba3eb50c3 = $(`<div id="html_003cc4893a61b82a1399a48ba3eb50c3" style="width: 100.0%; height: 100.0%;"><b>Jammu</b><br>Next-Day Pred (2026-11-22): 73.88 µg/m³ (Moderate)<br>Last Actual: 77.41 µg/m³</div>`)[0];
+                popup_310766c05ad12a5287d14ed1e5ee27e5.setContent(html_003cc4893a61b82a1399a48ba3eb50c3);
+            
+        
+
+        circle_marker_477eed5212c1a16bf4144d0da8760c7e.bindPopup(popup_310766c05ad12a5287d14ed1e5ee27e5)
+        ;
+
+        
+    
+    
+            var circle_marker_e713ae4054bb0540a91bed0affe8c5e6 = L.circleMarker(
+                [26.2389, 73.0243],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_b072fa2a467ea78c4fbaf1c76c910e3d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c8901c0c86028ac238336352450a8e6f = $(`<div id="html_c8901c0c86028ac238336352450a8e6f" style="width: 100.0%; height: 100.0%;"><b>Jodhpur</b><br>Next-Day Pred (2026-11-22): 30.58 µg/m³ (Satisfactory)<br>Last Actual: 29.31 µg/m³</div>`)[0];
+                popup_b072fa2a467ea78c4fbaf1c76c910e3d.setContent(html_c8901c0c86028ac238336352450a8e6f);
+            
+        
+
+        circle_marker_e713ae4054bb0540a91bed0affe8c5e6.bindPopup(popup_b072fa2a467ea78c4fbaf1c76c910e3d)
+        ;
+
+        
+    
+    
+            var circle_marker_c0aef215e6b06074c1e444e1da516efd = L.circleMarker(
+                [26.4499, 80.3319],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_60467924fa1dcfa6a113bbd0c9887f04 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2f0dea720e9250f4d4dd4b3e0a659c44 = $(`<div id="html_2f0dea720e9250f4d4dd4b3e0a659c44" style="width: 100.0%; height: 100.0%;"><b>Kanpur</b><br>Next-Day Pred (2026-11-22): 50.13 µg/m³ (Satisfactory)<br>Last Actual: 51.93 µg/m³</div>`)[0];
+                popup_60467924fa1dcfa6a113bbd0c9887f04.setContent(html_2f0dea720e9250f4d4dd4b3e0a659c44);
+            
+        
+
+        circle_marker_c0aef215e6b06074c1e444e1da516efd.bindPopup(popup_60467924fa1dcfa6a113bbd0c9887f04)
+        ;
+
+        
+    
+    
+            var circle_marker_97ab2715547e09a552ee75f9f93e8a1d = L.circleMarker(
+                [9.9312, 76.2673],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_bd61b65802c642b4e1aa24d57296bdaa = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_cd6d296879fb23b2b224140793b7dfe8 = $(`<div id="html_cd6d296879fb23b2b224140793b7dfe8" style="width: 100.0%; height: 100.0%;"><b>Kochi</b><br>Next-Day Pred (2026-11-22): 50.89 µg/m³ (Satisfactory)<br>Last Actual: 51.63 µg/m³</div>`)[0];
+                popup_bd61b65802c642b4e1aa24d57296bdaa.setContent(html_cd6d296879fb23b2b224140793b7dfe8);
+            
+        
+
+        circle_marker_97ab2715547e09a552ee75f9f93e8a1d.bindPopup(popup_bd61b65802c642b4e1aa24d57296bdaa)
+        ;
+
+        
+    
+    
+            var circle_marker_d5772e47c48ae6aa308fa2df2ef961e4 = L.circleMarker(
+                [22.5726, 88.3639],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_70df2bac394b47749020df40469d04e8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f7e585cdce618e8d819406d234b5c778 = $(`<div id="html_f7e585cdce618e8d819406d234b5c778" style="width: 100.0%; height: 100.0%;"><b>Kolkata</b><br>Next-Day Pred (2026-11-22): 43.83 µg/m³ (Satisfactory)<br>Last Actual: 14.35 µg/m³</div>`)[0];
+                popup_70df2bac394b47749020df40469d04e8.setContent(html_f7e585cdce618e8d819406d234b5c778);
+            
+        
+
+        circle_marker_d5772e47c48ae6aa308fa2df2ef961e4.bindPopup(popup_70df2bac394b47749020df40469d04e8)
+        ;
+
+        
+    
+    
+            var circle_marker_7626944af00c30b55af52f2af3e074ec = L.circleMarker(
+                [34.1526, 77.5771],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_2fe7ec7f7b841cfdb551141e4b7e1a0e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1062fb581525801665955bcd71b7cb67 = $(`<div id="html_1062fb581525801665955bcd71b7cb67" style="width: 100.0%; height: 100.0%;"><b>Leh</b><br>Next-Day Pred (2026-11-22): 8.10 µg/m³ (Good)<br>Last Actual: 5.96 µg/m³</div>`)[0];
+                popup_2fe7ec7f7b841cfdb551141e4b7e1a0e.setContent(html_1062fb581525801665955bcd71b7cb67);
+            
+        
+
+        circle_marker_7626944af00c30b55af52f2af3e074ec.bindPopup(popup_2fe7ec7f7b841cfdb551141e4b7e1a0e)
+        ;
+
+        
+    
+    
+            var circle_marker_3659343ef6ba8f76230491b3c3686788 = L.circleMarker(
+                [26.8467, 80.9462],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_35258a3ad8d224710515b5dcbdcbb47e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fb27379b7ca61aa970be7d3964b9fc32 = $(`<div id="html_fb27379b7ca61aa970be7d3964b9fc32" style="width: 100.0%; height: 100.0%;"><b>Lucknow</b><br>Next-Day Pred (2026-11-22): 52.09 µg/m³ (Satisfactory)<br>Last Actual: 53.11 µg/m³</div>`)[0];
+                popup_35258a3ad8d224710515b5dcbdcbb47e.setContent(html_fb27379b7ca61aa970be7d3964b9fc32);
+            
+        
+
+        circle_marker_3659343ef6ba8f76230491b3c3686788.bindPopup(popup_35258a3ad8d224710515b5dcbdcbb47e)
+        ;
+
+        
+    
+    
+            var circle_marker_3c061440c52557dfb4bb179352b9b024 = L.circleMarker(
+                [30.901, 75.8573],
+                {"bubblingMouseEvents": true, "color": "#e67e22", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#e67e22", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_0f7c37b1f89a8d8dd903623d28a9e138 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_585b7aa45af5510e13a7668f670c1f67 = $(`<div id="html_585b7aa45af5510e13a7668f670c1f67" style="width: 100.0%; height: 100.0%;"><b>Ludhiana</b><br>Next-Day Pred (2026-11-22): 103.80 µg/m³ (Poor)<br>Last Actual: 117.26 µg/m³</div>`)[0];
+                popup_0f7c37b1f89a8d8dd903623d28a9e138.setContent(html_585b7aa45af5510e13a7668f670c1f67);
+            
+        
+
+        circle_marker_3c061440c52557dfb4bb179352b9b024.bindPopup(popup_0f7c37b1f89a8d8dd903623d28a9e138)
+        ;
+
+        
+    
+    
+            var circle_marker_f790f486fd704dc93027f3936f88eef4 = L.circleMarker(
+                [9.9252, 78.1198],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_5b84547b0e83baa425f8e5f9504e95c3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5de69909ee99c623f9ea3c364fc42b9d = $(`<div id="html_5de69909ee99c623f9ea3c364fc42b9d" style="width: 100.0%; height: 100.0%;"><b>Madurai</b><br>Next-Day Pred (2026-11-22): 44.51 µg/m³ (Satisfactory)<br>Last Actual: 45.57 µg/m³</div>`)[0];
+                popup_5b84547b0e83baa425f8e5f9504e95c3.setContent(html_5de69909ee99c623f9ea3c364fc42b9d);
+            
+        
+
+        circle_marker_f790f486fd704dc93027f3936f88eef4.bindPopup(popup_5b84547b0e83baa425f8e5f9504e95c3)
+        ;
+
+        
+    
+    
+            var circle_marker_87688955818f544dc201ed4c4b97e2fb = L.circleMarker(
+                [12.9141, 74.856],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_c0ccfe0536b96c6f7131c12e494ca249 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e4bc69c15842be1f400b8966f0da12a1 = $(`<div id="html_e4bc69c15842be1f400b8966f0da12a1" style="width: 100.0%; height: 100.0%;"><b>Mangaluru</b><br>Next-Day Pred (2026-11-22): 49.67 µg/m³ (Satisfactory)<br>Last Actual: 52.34 µg/m³</div>`)[0];
+                popup_c0ccfe0536b96c6f7131c12e494ca249.setContent(html_e4bc69c15842be1f400b8966f0da12a1);
+            
+        
+
+        circle_marker_87688955818f544dc201ed4c4b97e2fb.bindPopup(popup_c0ccfe0536b96c6f7131c12e494ca249)
+        ;
+
+        
+    
+    
+            var circle_marker_b768d37274d285f75c5523d822ab5671 = L.circleMarker(
+                [19.076, 72.8777],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_78c6d9efc3b2c4bce077ef907ae0eee3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_35a4cfd9bb9d91c054efa49759f942c0 = $(`<div id="html_35a4cfd9bb9d91c054efa49759f942c0" style="width: 100.0%; height: 100.0%;"><b>Mumbai</b><br>Next-Day Pred (2026-11-22): 87.73 µg/m³ (Moderate)<br>Last Actual: 82.15 µg/m³</div>`)[0];
+                popup_78c6d9efc3b2c4bce077ef907ae0eee3.setContent(html_35a4cfd9bb9d91c054efa49759f942c0);
+            
+        
+
+        circle_marker_b768d37274d285f75c5523d822ab5671.bindPopup(popup_78c6d9efc3b2c4bce077ef907ae0eee3)
+        ;
+
+        
+    
+    
+            var circle_marker_2e08f8df6ff4fcca5a36f921576745f1 = L.circleMarker(
+                [12.2958, 76.6394],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_1704b865cc3963f4b15ea284ae063729 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2305f84793d0336ef43baa9566fcc222 = $(`<div id="html_2305f84793d0336ef43baa9566fcc222" style="width: 100.0%; height: 100.0%;"><b>Mysuru</b><br>Next-Day Pred (2026-11-22): 45.18 µg/m³ (Satisfactory)<br>Last Actual: 43.00 µg/m³</div>`)[0];
+                popup_1704b865cc3963f4b15ea284ae063729.setContent(html_2305f84793d0336ef43baa9566fcc222);
+            
+        
+
+        circle_marker_2e08f8df6ff4fcca5a36f921576745f1.bindPopup(popup_1704b865cc3963f4b15ea284ae063729)
+        ;
+
+        
+    
+    
+            var circle_marker_6a5e6b9c501c137ace3571490e67f922 = L.circleMarker(
+                [21.1458, 79.0882],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_ff493a05fde47cd7ea53edcc93caa0c9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0635bc02bb892a65ef56f0a9b1284926 = $(`<div id="html_0635bc02bb892a65ef56f0a9b1284926" style="width: 100.0%; height: 100.0%;"><b>Nagpur</b><br>Next-Day Pred (2026-11-22): 17.25 µg/m³ (Good)<br>Last Actual: 19.79 µg/m³</div>`)[0];
+                popup_ff493a05fde47cd7ea53edcc93caa0c9.setContent(html_0635bc02bb892a65ef56f0a9b1284926);
+            
+        
+
+        circle_marker_6a5e6b9c501c137ace3571490e67f922.bindPopup(popup_ff493a05fde47cd7ea53edcc93caa0c9)
+        ;
+
+        
+    
+    
+            var circle_marker_45a249e2dffd36b75e4d12076aa6b0fc = L.circleMarker(
+                [19.9975, 73.7898],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_8f8ff536d30e8274cea28fb09e70ea34 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_96bba0b739b401df95e5ec59149f991a = $(`<div id="html_96bba0b739b401df95e5ec59149f991a" style="width: 100.0%; height: 100.0%;"><b>Nashik</b><br>Next-Day Pred (2026-11-22): 46.98 µg/m³ (Satisfactory)<br>Last Actual: 44.21 µg/m³</div>`)[0];
+                popup_8f8ff536d30e8274cea28fb09e70ea34.setContent(html_96bba0b739b401df95e5ec59149f991a);
+            
+        
+
+        circle_marker_45a249e2dffd36b75e4d12076aa6b0fc.bindPopup(popup_8f8ff536d30e8274cea28fb09e70ea34)
+        ;
+
+        
+    
+    
+            var circle_marker_7f6665754a6f92fd6842aaaca32c74e9 = L.circleMarker(
+                [15.4909, 73.8278],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_e002c68d2583c6309ba139034dddf663 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_07bb4d053c80b9ccb37e4cd34c911c7e = $(`<div id="html_07bb4d053c80b9ccb37e4cd34c911c7e" style="width: 100.0%; height: 100.0%;"><b>Panaji</b><br>Next-Day Pred (2026-11-22): 47.60 µg/m³ (Satisfactory)<br>Last Actual: 44.19 µg/m³</div>`)[0];
+                popup_e002c68d2583c6309ba139034dddf663.setContent(html_07bb4d053c80b9ccb37e4cd34c911c7e);
+            
+        
+
+        circle_marker_7f6665754a6f92fd6842aaaca32c74e9.bindPopup(popup_e002c68d2583c6309ba139034dddf663)
+        ;
+
+        
+    
+    
+            var circle_marker_c3449ed026b0ba603a1007a6c4655564 = L.circleMarker(
+                [25.5941, 85.1376],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_8179930a9a0ddc1b0e5d282164158979 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e8c3fbed5ff881d6d3c10acd0fd3355d = $(`<div id="html_e8c3fbed5ff881d6d3c10acd0fd3355d" style="width: 100.0%; height: 100.0%;"><b>Patna</b><br>Next-Day Pred (2026-11-22): 34.23 µg/m³ (Satisfactory)<br>Last Actual: 22.19 µg/m³</div>`)[0];
+                popup_8179930a9a0ddc1b0e5d282164158979.setContent(html_e8c3fbed5ff881d6d3c10acd0fd3355d);
+            
+        
+
+        circle_marker_c3449ed026b0ba603a1007a6c4655564.bindPopup(popup_8179930a9a0ddc1b0e5d282164158979)
+        ;
+
+        
+    
+    
+            var circle_marker_877ead483889eca6f87f60afa5511bea = L.circleMarker(
+                [11.6234, 92.7265],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_d991e61c7b95c3a4d565663aba3bec41 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d9e49e99497ddd3aad8d5120dc71e441 = $(`<div id="html_d9e49e99497ddd3aad8d5120dc71e441" style="width: 100.0%; height: 100.0%;"><b>Port Blair</b><br>Next-Day Pred (2026-11-22): 11.13 µg/m³ (Good)<br>Last Actual: 8.30 µg/m³</div>`)[0];
+                popup_d991e61c7b95c3a4d565663aba3bec41.setContent(html_d9e49e99497ddd3aad8d5120dc71e441);
+            
+        
+
+        circle_marker_877ead483889eca6f87f60afa5511bea.bindPopup(popup_d991e61c7b95c3a4d565663aba3bec41)
+        ;
+
+        
+    
+    
+            var circle_marker_9b3e5a6a7a3636ad6a3856e9e84ff1ab = L.circleMarker(
+                [25.4358, 81.8463],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_7ca7f78d9c7015f649531ba38d14402f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_36ab8979082e9da5243b21ec87f4153f = $(`<div id="html_36ab8979082e9da5243b21ec87f4153f" style="width: 100.0%; height: 100.0%;"><b>Prayagraj</b><br>Next-Day Pred (2026-11-22): 33.75 µg/m³ (Satisfactory)<br>Last Actual: 39.90 µg/m³</div>`)[0];
+                popup_7ca7f78d9c7015f649531ba38d14402f.setContent(html_36ab8979082e9da5243b21ec87f4153f);
+            
+        
+
+        circle_marker_9b3e5a6a7a3636ad6a3856e9e84ff1ab.bindPopup(popup_7ca7f78d9c7015f649531ba38d14402f)
+        ;
+
+        
+    
+    
+            var circle_marker_10952c7b78941b0b1e48a66af7322bd7 = L.circleMarker(
+                [11.9416, 79.8083],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_9fbf071e807b67ef6c6cc61ef39d63b3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_27ec2d2c1c7ba70c385430620b317fe7 = $(`<div id="html_27ec2d2c1c7ba70c385430620b317fe7" style="width: 100.0%; height: 100.0%;"><b>Puducherry</b><br>Next-Day Pred (2026-11-22): 46.82 µg/m³ (Satisfactory)<br>Last Actual: 51.50 µg/m³</div>`)[0];
+                popup_9fbf071e807b67ef6c6cc61ef39d63b3.setContent(html_27ec2d2c1c7ba70c385430620b317fe7);
+            
+        
+
+        circle_marker_10952c7b78941b0b1e48a66af7322bd7.bindPopup(popup_9fbf071e807b67ef6c6cc61ef39d63b3)
+        ;
+
+        
+    
+    
+            var circle_marker_495c7b92fdbc4474efe8bd33cf8f9d7f = L.circleMarker(
+                [18.5204, 73.8567],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_3633ad818b4c5ee4147f425715b35efe = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b36bd6e506fca703734322b213cd4054 = $(`<div id="html_b36bd6e506fca703734322b213cd4054" style="width: 100.0%; height: 100.0%;"><b>Pune</b><br>Next-Day Pred (2026-11-22): 58.75 µg/m³ (Satisfactory)<br>Last Actual: 56.57 µg/m³</div>`)[0];
+                popup_3633ad818b4c5ee4147f425715b35efe.setContent(html_b36bd6e506fca703734322b213cd4054);
+            
+        
+
+        circle_marker_495c7b92fdbc4474efe8bd33cf8f9d7f.bindPopup(popup_3633ad818b4c5ee4147f425715b35efe)
+        ;
+
+        
+    
+    
+            var circle_marker_316e9433659aa8ce4145be53179ca6ef = L.circleMarker(
+                [21.2514, 81.6296],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_8a8fed23d133300acf98f3c82f91cfe3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8bc1135ef38f5817a4f4e7f2b6eb87eb = $(`<div id="html_8bc1135ef38f5817a4f4e7f2b6eb87eb" style="width: 100.0%; height: 100.0%;"><b>Raipur</b><br>Next-Day Pred (2026-11-22): 43.21 µg/m³ (Satisfactory)<br>Last Actual: 30.78 µg/m³</div>`)[0];
+                popup_8a8fed23d133300acf98f3c82f91cfe3.setContent(html_8bc1135ef38f5817a4f4e7f2b6eb87eb);
+            
+        
+
+        circle_marker_316e9433659aa8ce4145be53179ca6ef.bindPopup(popup_8a8fed23d133300acf98f3c82f91cfe3)
+        ;
+
+        
+    
+    
+            var circle_marker_e40cb29573fb327cfa570c1929d35d1a = L.circleMarker(
+                [23.3441, 85.3096],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_614ec42ef500663f8312c34880fb7c1a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_20d37a7d6b31638723572e89289fee30 = $(`<div id="html_20d37a7d6b31638723572e89289fee30" style="width: 100.0%; height: 100.0%;"><b>Ranchi</b><br>Next-Day Pred (2026-11-22): 21.68 µg/m³ (Good)<br>Last Actual: 15.81 µg/m³</div>`)[0];
+                popup_614ec42ef500663f8312c34880fb7c1a.setContent(html_20d37a7d6b31638723572e89289fee30);
+            
+        
+
+        circle_marker_e40cb29573fb327cfa570c1929d35d1a.bindPopup(popup_614ec42ef500663f8312c34880fb7c1a)
+        ;
+
+        
+    
+    
+            var circle_marker_eaccb949be84a80b1beaa6ecec51badf = L.circleMarker(
+                [25.5788, 91.8933],
+                {"bubblingMouseEvents": true, "color": "#2ecc71", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#2ecc71", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_84118f9e530b64ccdc20d428bc3e9ac5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d77c5d33c2f6a0a05c47edd035e91cf7 = $(`<div id="html_d77c5d33c2f6a0a05c47edd035e91cf7" style="width: 100.0%; height: 100.0%;"><b>Shillong</b><br>Next-Day Pred (2026-11-22): 12.46 µg/m³ (Good)<br>Last Actual: 7.28 µg/m³</div>`)[0];
+                popup_84118f9e530b64ccdc20d428bc3e9ac5.setContent(html_d77c5d33c2f6a0a05c47edd035e91cf7);
+            
+        
+
+        circle_marker_eaccb949be84a80b1beaa6ecec51badf.bindPopup(popup_84118f9e530b64ccdc20d428bc3e9ac5)
+        ;
+
+        
+    
+    
+            var circle_marker_4332ddda6717d21b59551a4030bc2cc9 = L.circleMarker(
+                [31.1048, 77.1734],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_b3f055be9cb18634ecc2fe7fb9b9bf6a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_58eb6845da33d7f8f179e9a22a247ab3 = $(`<div id="html_58eb6845da33d7f8f179e9a22a247ab3" style="width: 100.0%; height: 100.0%;"><b>Shimla</b><br>Next-Day Pred (2026-11-22): 41.73 µg/m³ (Satisfactory)<br>Last Actual: 39.72 µg/m³</div>`)[0];
+                popup_b3f055be9cb18634ecc2fe7fb9b9bf6a.setContent(html_58eb6845da33d7f8f179e9a22a247ab3);
+            
+        
+
+        circle_marker_4332ddda6717d21b59551a4030bc2cc9.bindPopup(popup_b3f055be9cb18634ecc2fe7fb9b9bf6a)
+        ;
+
+        
+    
+    
+            var circle_marker_fb05a5c9adda6c52a40972d6d1d27766 = L.circleMarker(
+                [34.0837, 74.7973],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_c3e1d6071efec5dcef83c962e0682aa5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a176e571493f8df6cba445d6f74c9983 = $(`<div id="html_a176e571493f8df6cba445d6f74c9983" style="width: 100.0%; height: 100.0%;"><b>Srinagar</b><br>Next-Day Pred (2026-11-22): 56.57 µg/m³ (Satisfactory)<br>Last Actual: 54.85 µg/m³</div>`)[0];
+                popup_c3e1d6071efec5dcef83c962e0682aa5.setContent(html_a176e571493f8df6cba445d6f74c9983);
+            
+        
+
+        circle_marker_fb05a5c9adda6c52a40972d6d1d27766.bindPopup(popup_c3e1d6071efec5dcef83c962e0682aa5)
+        ;
+
+        
+    
+    
+            var circle_marker_b3ca052249392eebad4e818b572c92a0 = L.circleMarker(
+                [21.1702, 72.8311],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_4b81170b285e58af315985792d37c144 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5bc51d12046600a171636c6992d37c72 = $(`<div id="html_5bc51d12046600a171636c6992d37c72" style="width: 100.0%; height: 100.0%;"><b>Surat</b><br>Next-Day Pred (2026-11-22): 72.74 µg/m³ (Moderate)<br>Last Actual: 64.39 µg/m³</div>`)[0];
+                popup_4b81170b285e58af315985792d37c144.setContent(html_5bc51d12046600a171636c6992d37c72);
+            
+        
+
+        circle_marker_b3ca052249392eebad4e818b572c92a0.bindPopup(popup_4b81170b285e58af315985792d37c144)
+        ;
+
+        
+    
+    
+            var circle_marker_3801370c4ce91ca5f901725f431c11bf = L.circleMarker(
+                [8.5241, 76.9366],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_ead7a93255f57c0feeb03c2e707aab2c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c2204536855bb6c59bb5711a9c9d544d = $(`<div id="html_c2204536855bb6c59bb5711a9c9d544d" style="width: 100.0%; height: 100.0%;"><b>Thiruvananthapuram</b><br>Next-Day Pred (2026-11-22): 41.70 µg/m³ (Satisfactory)<br>Last Actual: 41.64 µg/m³</div>`)[0];
+                popup_ead7a93255f57c0feeb03c2e707aab2c.setContent(html_c2204536855bb6c59bb5711a9c9d544d);
+            
+        
+
+        circle_marker_3801370c4ce91ca5f901725f431c11bf.bindPopup(popup_ead7a93255f57c0feeb03c2e707aab2c)
+        ;
+
+        
+    
+    
+            var circle_marker_491e24ba8c9b512c9e8f9aaad058d750 = L.circleMarker(
+                [22.3072, 73.1812],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_8846b090d3670529c8bc4d7f967a4fe7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_587f65309b42292e68332a917ef96dda = $(`<div id="html_587f65309b42292e68332a917ef96dda" style="width: 100.0%; height: 100.0%;"><b>Vadodara</b><br>Next-Day Pred (2026-11-22): 58.48 µg/m³ (Satisfactory)<br>Last Actual: 52.20 µg/m³</div>`)[0];
+                popup_8846b090d3670529c8bc4d7f967a4fe7.setContent(html_587f65309b42292e68332a917ef96dda);
+            
+        
+
+        circle_marker_491e24ba8c9b512c9e8f9aaad058d750.bindPopup(popup_8846b090d3670529c8bc4d7f967a4fe7)
+        ;
+
+        
+    
+    
+            var circle_marker_451c5ab4a44bf32a0ca067b3dcaae4a7 = L.circleMarker(
+                [25.3176, 82.9739],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_78c04d4560b86973cb123ec03f7fc295 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6a15c8c14671185a83bd56aa960b4272 = $(`<div id="html_6a15c8c14671185a83bd56aa960b4272" style="width: 100.0%; height: 100.0%;"><b>Varanasi</b><br>Next-Day Pred (2026-11-22): 36.32 µg/m³ (Satisfactory)<br>Last Actual: 35.02 µg/m³</div>`)[0];
+                popup_78c04d4560b86973cb123ec03f7fc295.setContent(html_6a15c8c14671185a83bd56aa960b4272);
+            
+        
+
+        circle_marker_451c5ab4a44bf32a0ca067b3dcaae4a7.bindPopup(popup_78c04d4560b86973cb123ec03f7fc295)
+        ;
+
+        
+    
+    
+            var circle_marker_32d4e46b27ec1c94308ba25108bd0403 = L.circleMarker(
+                [16.5062, 80.648],
+                {"bubblingMouseEvents": true, "color": "#f39c12", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#f39c12", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_eb027f6b465548fa96aba937370c8a30 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8f31f68a79d7ede4b8e51e3b4b512658 = $(`<div id="html_8f31f68a79d7ede4b8e51e3b4b512658" style="width: 100.0%; height: 100.0%;"><b>Vijayawada</b><br>Next-Day Pred (2026-11-22): 70.04 µg/m³ (Moderate)<br>Last Actual: 64.27 µg/m³</div>`)[0];
+                popup_eb027f6b465548fa96aba937370c8a30.setContent(html_8f31f68a79d7ede4b8e51e3b4b512658);
+            
+        
+
+        circle_marker_32d4e46b27ec1c94308ba25108bd0403.bindPopup(popup_eb027f6b465548fa96aba937370c8a30)
+        ;
+
+        
+    
+    
+            var circle_marker_0efcdb017d5b9c3a520db200b1f856a8 = L.circleMarker(
+                [17.6868, 83.2185],
+                {"bubblingMouseEvents": true, "color": "#27ae60", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#27ae60", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 6, "stroke": true, "weight": 3}
+            ).addTo(map_26ae96b81797a4d4936023f256de2db3);
+        
+    
+        var popup_360c539f7de0ce29d2c8a0ea334646b1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_51b5989877eb4640baf33bb711ced2db = $(`<div id="html_51b5989877eb4640baf33bb711ced2db" style="width: 100.0%; height: 100.0%;"><b>Visakhapatnam</b><br>Next-Day Pred (2026-11-22): 50.20 µg/m³ (Satisfactory)<br>Last Actual: 46.04 µg/m³</div>`)[0];
+                popup_360c539f7de0ce29d2c8a0ea334646b1.setContent(html_51b5989877eb4640baf33bb711ced2db);
+            
+        
+
+        circle_marker_0efcdb017d5b9c3a520db200b1f856a8.bindPopup(popup_360c539f7de0ce29d2c8a0ea334646b1)
+        ;
+
+        
+    
+</script>
+</html>
